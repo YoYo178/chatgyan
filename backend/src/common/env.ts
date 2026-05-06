@@ -11,7 +11,10 @@ const envSchema = z.object({
     FRONTEND_ORIGIN: z.string(),
     DISABLE_HELMET: z.coerce.boolean().default(false),
 
-    MONGODB_URI: z.string()
+    MONGODB_URI: z.string(),
+
+    ACCESS_TOKEN_SECRET: z.string(),
+    REFRESH_TOKEN_SECRET: z.string(),
 });
 
 const ENV = envSchema.parse(process.env);
