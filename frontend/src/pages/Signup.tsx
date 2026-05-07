@@ -3,8 +3,56 @@ import CustomInput from "@/components/CustomInput";
 import InfoCard from "@/components/InfoCard";
 import { ArrowRight, LockKeyhole, Mail, User } from "lucide-react";
 import { Link } from "react-router";
+import { useForm } from "react-hook-form";
+import * as v from "valibot";
+import { valibotResolver } from "@hookform/resolvers/valibot";
+
+const SignupSchema = v.pipe(
+  v.object({
+    fullName: v.pipe(
+      v.string(),
+      v.trim(),
+      v.minLength(1, "Full name is required"),
+    ),
+    email: v.pipe(
+      v.string("Email is required"),
+      v.email("Invalid email address"),
+    ),
+    password: v.pipe(
+      v.string("Password is required"),
+      v.minLength(8, "Password must be at least 8 characters"),
+    ),
+    confirmPassword: v.pipe(
+      v.string(),
+      v.trim(),
+      v.minLength(1, "Confirm password is required"),
+    ),
+  }),
+  v.forward(
+    v.check(
+      ({ password, confirmPassword }) => password === confirmPassword,
+      "Passwords do not match",
+    ),
+    ["confirmPassword"],
+  ),
+);
+type TSignupFormData = v.InferOutput<typeof SignupSchema>;
 
 export default function Signup() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TSignupFormData>({
+    resolver: valibotResolver(SignupSchema),
+    mode: "onSubmit",
+    reValidateMode: "onChange",
+  });
+
+  const onSubmit = (data: TSignupFormData) => {
+    console.log("Form data:", data);
+  };
+
   return (
     <main className="min-h-screen bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 flex flex-col items-center">
       <section className="w-full max-w-6xl px-8 min-h-screen grid items-center md:grid-cols-2 gap-12 border-l border-r border-slate-200/70 dark:border-slate-700/70">
@@ -45,30 +93,42 @@ export default function Signup() {
               </p>
             </div>
 
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
               <CustomInput
                 icon={<User className="h-4 w-4 text-slate-400" />}
                 label="Full name"
                 placeholder="Jane Doe"
                 type="text"
+                autoComplete="name"
+                error={errors.fullName?.message}
+                {...register("fullName")}
               />
               <CustomInput
                 icon={<Mail className="h-4 w-4 text-slate-400" />}
                 label="Email"
                 placeholder="you@example.com"
                 type="email"
+                autoComplete="email"
+                error={errors.email?.message}
+                {...register("email")}
               />
               <CustomInput
                 icon={<LockKeyhole className="h-4 w-4 text-slate-400" />}
                 label="Password"
                 placeholder="At least 8 characters"
                 type="password"
+                autoComplete="new-password"
+                error={errors.password?.message}
+                {...register("password")}
               />
               <CustomInput
                 icon={<LockKeyhole className="h-4 w-4 text-slate-400" />}
                 label="Confirm password"
                 placeholder="Confirm your password"
                 type="password"
+                autoComplete="new-password"
+                error={errors.confirmPassword?.message}
+                {...register("confirmPassword")}
               />
 
               <button
