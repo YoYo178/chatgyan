@@ -1,7 +1,13 @@
 import Badge from '@/components/Badge';
 import CustomInput from '@/components/CustomInput';
 import InfoCard from '@/components/InfoCard';
-import { ArrowRight, Hash, LockKeyhole, Mail, User } from 'lucide-react';
+import {
+  IconMail,
+  IconKey,
+  IconArrowNarrowRight,
+  IconUser,
+  IconHash,
+} from '@tabler/icons-react';
 import { Link } from 'react-router';
 import { useForm } from 'react-hook-form';
 import * as v from 'valibot';
@@ -104,7 +110,7 @@ export default function Signup() {
 
             <form className='space-y-5' onSubmit={handleSubmit(onSubmit)}>
               <CustomInput
-                icon={<User className='h-4 w-4 text-slate-400' />}
+                icon={<IconUser className='h-6 w-6 text-slate-400' />}
                 label='Full name'
                 placeholder='Jane Doe'
                 type='text'
@@ -113,7 +119,7 @@ export default function Signup() {
                 {...register('fullName')}
               />
               <CustomInput
-                icon={<Hash className='h-4 w-4 text-slate-400' />}
+                icon={<IconHash className='h-6 w-6 text-slate-400' />}
                 label='Username'
                 placeholder='coolguy_123'
                 type='text'
@@ -122,7 +128,7 @@ export default function Signup() {
                 {...register('username')}
               />
               <CustomInput
-                icon={<Mail className='h-4 w-4 text-slate-400' />}
+                icon={<IconMail className='h-6 w-6 text-slate-400' />}
                 label='Email'
                 placeholder='you@example.com'
                 type='email'
@@ -131,7 +137,7 @@ export default function Signup() {
                 {...register('email')}
               />
               <CustomInput
-                icon={<LockKeyhole className='h-4 w-4 text-slate-400' />}
+                icon={<IconKey className='h-6 w-6 text-slate-400' />}
                 label='Password'
                 placeholder='At least 8 characters'
                 type='password'
@@ -140,7 +146,7 @@ export default function Signup() {
                 {...register('password')}
               />
               <CustomInput
-                icon={<LockKeyhole className='h-4 w-4 text-slate-400' />}
+                icon={<IconKey className='h-6 w-6 text-slate-400' />}
                 label='Confirm password'
                 placeholder='Confirm your password'
                 type='password'
@@ -154,7 +160,7 @@ export default function Signup() {
                 className='inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-teal-500 px-4 py-3 font-semibold text-white transition hover:bg-teal-600'
               >
                 {isPending ? 'Please wait...' : 'Create account'}
-                <ArrowRight className='h-4 w-4' />
+                <IconArrowNarrowRight className='h-6 w-6' />
               </button>
               {isError && (
                 <p className='text-center text-sm text-red-500 dark:text-red-400'>

@@ -1,7 +1,7 @@
 import Badge from '@/components/Badge';
 import CustomInput from '@/components/CustomInput';
 import InfoCard from '@/components/InfoCard';
-import { Mail, LockKeyhole, ArrowRight } from 'lucide-react';
+import { IconMail, IconKey, IconArrowNarrowRight } from '@tabler/icons-react';
 import { Link } from 'react-router';
 import { useForm } from 'react-hook-form';
 import * as v from 'valibot';
@@ -78,7 +78,7 @@ export default function Login() {
 
             <form className='space-y-5' onSubmit={handleSubmit(onSubmit)}>
               <CustomInput
-                icon={<Mail className='h-4 w-4 text-slate-400' />}
+                icon={<IconMail className='h-6 w-6 text-slate-400' />}
                 label='Email'
                 placeholder='you@example.com'
                 type='email'
@@ -87,7 +87,7 @@ export default function Login() {
                 {...register('email')}
               />
               <CustomInput
-                icon={<LockKeyhole className='h-4 w-4 text-slate-400' />}
+                icon={<IconKey className='h-6 w-6 text-slate-400' />}
                 label='Password'
                 placeholder='Enter your password'
                 type='password'
@@ -119,7 +119,7 @@ export default function Login() {
                   className='inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-teal-500 px-4 py-3 font-semibold text-white transition hover:bg-teal-600'
                 >
                   {isPending ? 'Signing in...' : 'Sign in'}
-                  <ArrowRight className='h-4 w-4' />
+                  <IconArrowNarrowRight className='h-6 w-6' />
                 </button>
                 {isError && (
                   <p className='text-sm text-red-600 dark:text-red-400 mt-2'>
