@@ -4,7 +4,7 @@ export interface IUser {
     _id: mongoose.Types.ObjectId;
 
     /** User's full name */
-    name: string;
+    fullName: string;
 
     /** User's username (handle) */
     username: string;
@@ -28,7 +28,7 @@ export interface IUser {
 export type IPublicUser = Omit<
     IUser,
     'email' |
-    'name' |
+    'fullName' |
     'passwordHash' |
     'room' |
     'updatedAt'

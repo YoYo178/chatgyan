@@ -2,19 +2,22 @@ import ENV from '@src/common/env.js';
 import type { CorsOptions } from 'cors';
 
 const allowedOrigins = [
-    'https://localhost:5173',
-    'https://yoyo178.github.io',
-    ENV.FRONTEND_ORIGIN,
+  'http://localhost:5173',
+  'https://yoyo178.github.io',
+  ENV.FRONTEND_ORIGIN,
 ];
 
 export const CORSConfig: CorsOptions = {
-    origin: (origin: string | undefined, callback: (error: Error | null, allow?: boolean) => void) => {
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Blocked by CORS Policy'));
-        }
-    },
-    credentials: true,
-    optionsSuccessStatus: 200,
+  origin: (
+    origin: string | undefined,
+    callback: (error: Error | null, allow?: boolean) => void,
+  ) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Blocked by CORS Policy'));
+    }
+  },
+  credentials: true,
+  optionsSuccessStatus: 200,
 };

@@ -45,7 +45,7 @@ export const login = async (req: Request, res: Response) => {
             data: {
                 user: {
                     _id: user._id.toString(),
-                    name: user.name,
+                    fullName: user.fullName,
                     username: user.username,
                     email: user.email,
                     avatarURL: user.avatarURL,
@@ -73,7 +73,7 @@ export const logout = (_: Request, res: Response) => {
 };
 
 export const signup = async (req: Request, res: Response) => {
-    const { username, name, email, password } = req.body as TSignUpBody;
+    const { username, fullName, email, password } = req.body as TSignUpBody;
 
     const hashedPassword = await argon2.hash(password);
 
@@ -87,7 +87,7 @@ export const signup = async (req: Request, res: Response) => {
     if (usernameExists)
         throw new APIError('This username is already taken, try another.', HTTP_STATUS_CODES.Conflict);
 
-    const user = await createUser({ username, name, email, passwordHash: hashedPassword });
+    const user = await createUser({ username, fullName, email, passwordHash: hashedPassword });
 
     const { passwordHash: _passwordHash, ...rest } = user;
 
