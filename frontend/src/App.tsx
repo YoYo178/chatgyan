@@ -4,6 +4,8 @@ import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import { useLayoutEffect } from 'react';
+import GuestRoute from './pages/wrappers/GuestRoute';
+import UserRoute from './pages/wrappers/UserRoute';
 
 function App() {
   const userPrefersDark =
@@ -21,9 +23,15 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<LandingPage />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/signup' element={<Signup />} />
+        <Route element={<UserRoute />}>
+          <Route path='/dashboard' element={<h1>TODO</h1>} />
+        </Route>
+        
+        <Route element={<GuestRoute />}>
+          <Route path='/' element={<LandingPage />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/signup' element={<Signup />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
