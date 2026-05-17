@@ -1,4 +1,6 @@
+import * as cookie from 'cookie';
 import type { NextFunction, Request, Response } from 'express';
+import type { ExtendedError } from 'socket.io';
 
 import HTTP_STATUS_CODES from '@src/common/HttpStatusCodes.js';
 
@@ -6,6 +8,7 @@ import { cookieConfig } from '@src/config/cookies.config.js';
 import { tokenConfig } from '@src/config/jwt.config.js';
 import { User } from '@src/models/user.model.js';
 import type { TVerifyAuthReturn } from '@src/types/jwt.types.js';
+import type { ChatGyanSocket } from '@src/types/socket.types.js';
 import { APIError } from '@src/utils/api.utils.js';
 import { generateAccessToken, verifyAccessToken, verifyRefreshToken } from '@src/utils/jwt.utils.js';
 
@@ -116,4 +119,33 @@ export const requireAuth = async (req: Request, res: Response, next: NextFunctio
     }
 
     throw new APIError('Authentication failed', HTTP_STATUS_CODES.InternalServerError);
+};
+
+export const requireSocketAuth = async (socket: ChatGyanSocket, next: (err?: ExtendedError) => void) => {
+  const rawCookie = socket.handshake.headers.cookie;
+  if (!rawCookie) return next(new Error('Unauthorized'));
+
+  const cookies = cookie.parse(rawCookie);
+  const { accessToken, refreshToken } = cookies;
+
+  const authDetails = await verifyAuth(refreshToken, accessToken);
+
+  if (authDetails.isMaliciousUser) {
+    // TODO: Blacklist by IP
+    next(new Error('Malicious activity detected, you have been added to the blacklist.'));
+    return;
+  }
+
+  if (authDetails.data.user) {
+    socket.data.user = {
+      id: authDetails.data.user._id.toString(),
+      email: authDetails.data.user.email,
+      username: authDetails.data.user.username,
+    };
+
+    next();
+    return;
+  }
+
+  next(new Error('Authentication failed'));
 };
