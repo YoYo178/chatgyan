@@ -41,7 +41,7 @@ export default function Login() {
       <section className='w-full max-w-6xl px-8 min-h-screen grid items-center md:grid-cols-2 gap-12 border-l border-r border-slate-200/70 dark:border-slate-700/70'>
         <div className='flex flex-col justify-center gap-8 text-center md:text-left py-12 md:py-20'>
           <div className='flex flex-col gap-4 items-center md:items-start'>
-            <Badge>Welcome back to EduZone</Badge>
+            <Badge>Welcome back to ChatGyan</Badge>
             <h1 className='text-4xl sm:text-5xl font-extrabold leading-tight tracking-tight'>
               Sign in and jump back into your study circles.
             </h1>
@@ -72,7 +72,7 @@ export default function Login() {
             <div className='mb-8'>
               <h2 className='text-2xl font-bold'>Sign in</h2>
               <p className='mt-2 text-sm text-slate-600 dark:text-slate-300'>
-                Use your EduZone account to continue.
+                Use your ChatGyan account to continue.
               </p>
             </div>
 

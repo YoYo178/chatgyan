@@ -5,7 +5,7 @@ export default function LandingPage() {
                 <section id='hero' className='md:max-w-6xl px-8 h-screen flex justify-center text-center md:justify-between md:text-left items-center border-l border-r'>
                     <div className='md:max-w-[60%] flex flex-col gap-8'>
                         <div className='flex flex-col gap-2 items-center md:items-start'>
-                            <h1 className='text-4xl sm:text-5xl font-extrabold leading-tight'>EduZone — Connect. Collaborate. Graduate.</h1>
+                            <h1 className='text-4xl sm:text-5xl font-extrabold leading-tight'>ChatGyan — Connect. Collaborate. Graduate.</h1>
                             <p className='text-slate-600 dark:text-slate-300 max-w-xl'>A collaboration platform built for online students to solve communication friction, coordinate study sessions, share resources, and stay on track.</p>
                         </div>
 
@@ -19,8 +19,8 @@ export default function LandingPage() {
                 </section>
 
                 <section id='problem' className='md:max-w-6xl px-8 h-screen flex flex-col gap-4 justify-center items-center border-l border-r text-center text-lg text-slate-600 dark:text-slate-300'>
-                    <h2 className='text-3xl font-semibold text-primary-foreground'>Why students need EduZone</h2>
-                    <p>Online learning is flexible — but staying connected and coordinating with peers is hard. Missed messages, scattered resources, and timezone gaps create friction that slows progress. EduZone centralizes communication, organizes study work, and makes collaboration simple.</p>
+                    <h2 className='text-3xl font-semibold text-primary-foreground'>Why students need ChatGyan</h2>
+                    <p>Online learning is flexible — but staying connected and coordinating with peers is hard. Missed messages, scattered resources, and timezone gaps create friction that slows progress. ChatGyan centralizes communication, organizes study work, and makes collaboration simple.</p>
                     <p>(And yes, it works for in-person students too!)</p>
                     <p>Built by students, for students. ❤️</p>
                 </section>
@@ -58,7 +58,7 @@ export default function LandingPage() {
 
             <footer className='flex justify-between items-center text-sm bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border-t border-slate-100 dark:border-slate-700 py-8'>
                 <div className='max-w-6xl px-4 mx-auto w-full flex flex-col md:flex-row justify-between items-center gap-4'>
-                    <div>© {new Date().getFullYear()} EduZone — Built for students.</div>
+                    <div>© {new Date().getFullYear()} ChatGyan — Built for students.</div>
                     <div className='flex gap-4'>
                         <a href='/privacy' className='hover:underline'>Privacy</a>
                         <a href='/terms' className='hover:underline'>Terms</a>

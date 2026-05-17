@@ -78,7 +78,7 @@ export default function Signup() {
               Start collaborating with your study circle today.
             </h1>
             <p className='max-w-xl text-slate-600 dark:text-slate-300'>
-              Create your free EduZone account and connect with classmates,
+              Create your free ChatGyan account and connect with classmates,
               share resources, and stay on top of your coursework.
             </p>
           </div>
@@ -104,7 +104,7 @@ export default function Signup() {
             <div className='mb-8'>
               <h2 className='text-2xl font-bold'>Create account</h2>
               <p className='mt-2 text-sm text-slate-600 dark:text-slate-300'>
-                Set up your EduZone profile in minutes.
+                Set up your ChatGyan profile in minutes.
               </p>
             </div>
 
