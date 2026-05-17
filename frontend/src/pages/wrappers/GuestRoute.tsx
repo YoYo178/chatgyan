@@ -1,4 +1,5 @@
 import { useGetMeQuery } from '@/api/hooks/users/useGetMeQuery';
+import LoadingPage from '@/pages/LoadingPage';
 import axios from 'axios';
 import { Navigate, Outlet } from 'react-router';
 
@@ -7,12 +8,13 @@ export default function GuestRoute() {
     queryKey: ['users', 'me'],
   });
   const me = data?.data?.user;
-  const isLoggedIn = !!me?._id;
+  const isUnauthorized =
+    axios.isAxiosError(error) && error.response?.status === 401;
+  const isLoggedIn = !isUnauthorized && !!me?._id;
 
-  if (isLoading) return <div>Loading...</div>;
-  if (axios.isAxiosError(error) && error.response?.status !== 401)
-    return <div>Error: {error.message}</div>;
-  if (isLoggedIn) return <Navigate to='/dashboard' />;
+  if (isLoading) return <LoadingPage />;
+  if (error && !isUnauthorized) return <div>Error: {error.message}</div>;
+  if (isLoggedIn) return <Navigate to='/dashboard' replace />;
 
   return <Outlet />;
 }
