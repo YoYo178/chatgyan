@@ -1,3 +1,5 @@
+import InfoCard from "@/components/InfoCard";
+
 export default function LandingPage() {
     return (
         <>
@@ -28,30 +30,38 @@ export default function LandingPage() {
                 <section id='features' className='max-w-6xl px-8 border-l border-r flex flex-col gap-8'>
                     <h2 className='text-2xl font-semibold text-center'>Features</h2>
                     <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-                        <article className='p-4 rounded-lg flex flex-col gap-1 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700'>
-                            <h4 className='font-semibold'>Real-time Group Chat</h4>
-                            <p className='text-sm text-slate-600 dark:text-slate-300'>Persistent study rooms, TODO, and TODO that keep conversations organized.</p>
-                        </article>
-                        <article className='p-4 rounded-lg flex flex-col gap-1 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700'>
-                            <h4 className='font-semibold'>Shared Resource Library</h4>
-                            <p className='text-sm text-slate-600 dark:text-slate-300'>Easily upload, tag, and search lecture notes, slides, and study guides.</p>
-                        </article>
-                        <article className='p-4 rounded-lg flex flex-col gap-1 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700'>
-                            <h4 className='font-semibold'>Scheduling & Timezones</h4>
-                            <p className='text-sm text-slate-600 dark:text-slate-300'>Find overlapping availability and create study sessions that work for everyone.</p>
-                        </article>
-                        <article className='p-4 rounded-lg flex flex-col gap-1 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700'>
-                            <h4 className='font-semibold'>Study Rooms</h4>
-                            <p className='text-sm text-slate-600 dark:text-slate-300'>Temporary focused rooms for pair programming, peer review, or exam prep.</p>
-                        </article>
+                        <InfoCard
+                            title='Real-time Group Chat'
+                            description='Persistent study rooms, TODO, and TODO that keep conversations organized.'
+                        />
+
+                        <InfoCard
+                            title='Shared Resource Library'
+                            description='Easily upload, tag, and search lecture notes, slides, and study guides.'
+                        />
+
+                        <InfoCard
+                            title='Scheduling & Timezones'
+                            description='Find overlapping availability and create study sessions that work for everyone.'
+                        />
+
+                        <InfoCard
+                            title='Study Rooms'
+                            description='Temporary focused rooms for pair programming, peer review, or exam prep.'
+                        />
                     </div>
                 </section>
 
-                <section id='cta' className='max-w-6xl w-full px-8 py-40 flex justify-center text-center border-l border-r'>
-                    <div className='w-fit px-8 py-8 border-l border-r rounded-4xl'>
+                <section id='cta' className='max-w-6xl w-full px-8 py-40 flex flex-wrap md:flex-nowrap justify-center gap-4 text-center border-l border-r'>
+                    <div className='w-full md:w-1/2 md:flex-1 px-8 py-8 border-l border-r rounded-4xl'>
                         <h3 className='text-xl font-semibold'>Ready to collaborate smarter?</h3>
                         <p className='mt-2 text-slate-600 dark:text-slate-300'>Join fellow online students and reclaim your time.</p>
                         <a id='signup' href='/signup' className='mt-4 inline-block bg-teal-500 hover:bg-teal-600 text-white px-5 py-2 rounded-md font-semibold'>Create an account</a>
+                    </div>
+                    <div className='w-full md:w-1/2 md:flex-1 px-8 py-8 border-l border-r rounded-4xl'>
+                        <h3 className='text-xl font-semibold'>Already a collaborator?</h3>
+                        <p className='mt-2 text-slate-600 dark:text-slate-300'>Log in to your existing account and start collaborating.</p>
+                        <a id='login' href='/login' className='mt-4 inline-block bg-teal-500 hover:bg-teal-600 text-white px-5 py-2 rounded-md font-semibold'>Log in</a>
                     </div>
                 </section>
             </main>
