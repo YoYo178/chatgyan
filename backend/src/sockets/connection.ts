@@ -1,7 +1,14 @@
-import type { ChatGyanSocket, ChatGyanSocketServer } from '@src/types/socket.types.js';
+import type {
+  ChatGyanSocket,
+  ChatGyanSocketServer,
+} from '@src/types/socket.types.js';
 import logger from '@src/utils/logger.utils.js';
+import { registerRoomHandlers } from './handlers/room/index.js';
 
-export function handleSocketConnection(io: ChatGyanSocketServer, socket: ChatGyanSocket) {
+export function handleSocketConnection(
+  io: ChatGyanSocketServer,
+  socket: ChatGyanSocket,
+) {
   if (!socket.data?.user) {
     logger.warn('Unauthenticated user attempted to connect');
     return;
@@ -14,4 +21,6 @@ export function handleSocketConnection(io: ChatGyanSocketServer, socket: ChatGya
 
   // Have the user join a room by their own ObjectId for a stable identity
   socket.join(socket.data.user.id);
+
+  registerRoomHandlers(io, socket);
 }

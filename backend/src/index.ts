@@ -1,7 +1,7 @@
 import express, {
-    type NextFunction,
-    type Request,
-    type Response,
+  type NextFunction,
+  type Request,
+  type Response,
 } from 'express';
 import http from 'http';
 import path from 'path';
@@ -28,11 +28,11 @@ import logger, { morganStream } from '@src/utils/logger.utils.js';
 import APIRouter from '@src/routes/index.js';
 import { setupSocket } from './sockets/socket.js';
 import type {
-    ChatGyanSocketServer,
-    ClientToServerEvents,
-    InterServerEvents,
-    ServerToClientEvents,
-    SocketData,
+  ChatGyanSocketServer,
+  ClientToServerEvents,
+  InterServerEvents,
+  ServerToClientEvents,
+  SocketData,
 } from './types/socket.types.js';
 
 /* =========================================================================== */
@@ -55,6 +55,7 @@ const io: ChatGyanSocketServer = new SocketIOServer<
   serveClient: false,
 });
 
+// Add socket event listeners
 setupSocket(io);
 
 // Add middlewares
@@ -90,6 +91,12 @@ app.use(
 // Handle missing static files
 app.use('/assets', (_, res) => {
   res.status(404).json({ success: false, message: 'Not found' });
+});
+
+// Attach IO instance via express middleware
+app.use((req: Request, _res: Response, next: NextFunction) => {
+  req.io = io;
+  next();
 });
 
 // Attach our main router that handles all the paths of the server
