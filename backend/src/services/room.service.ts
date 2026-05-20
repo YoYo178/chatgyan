@@ -26,7 +26,7 @@ export async function updateRoom(roomId: string, newRoomData: Partial<IRoom>) {
   return Room.findByIdAndUpdate(
     roomId,
     { $set: newRoomData },
-    { new: true, lean: true },
+    { returnDocument: 'after', lean: true },
   ).exec();
 }
 
@@ -51,7 +51,7 @@ export async function addUserToRoom(
         },
       },
     },
-    { new: true, lean: true, session: null }, // Remove session for now, will be handled by transaction
+    { returnDocument: 'after', lean: true, session: null }, // Remove session for now, will be handled by transaction
   ).exec();
 }
 
@@ -59,7 +59,7 @@ export async function removeUserFromRoom(roomId: string, userId: string) {
   return Room.findByIdAndUpdate(
     roomId,
     { $inc: { memberCount: -1 }, $pull: { members: { user: userId } } },
-    { new: true, lean: true, session: null }, // Remove session for now, will be handled by transaction
+    { returnDocument: 'after', lean: true, session: null }, // Remove session for now, will be handled by transaction
   ).exec();
 }
 
@@ -173,7 +173,7 @@ export async function checkDMRoom(userId: string, otherUserId: string) {
     const updatedRoom = await DMRoom.findOneAndUpdate(
       { _id: existingRoom._id },
       { isActive: true },
-      { lean: true, new: true },
+      { lean: true, returnDocument: 'after' },
     ).exec();
     return updatedRoom;
   } else {
@@ -195,7 +195,7 @@ export async function deactivateDMRoom(userId: string, otherUserId: string) {
     {
       $set: { isActive: false },
     },
-    { new: true, upsert: true, lean: true },
+    { returnDocument: 'after', upsert: true, lean: true },
   ).exec();
 
   return room;

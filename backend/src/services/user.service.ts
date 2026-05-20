@@ -32,7 +32,7 @@ export async function updateUser(userId: string, newUserData: Partial<IUser>, pu
     return User.findByIdAndUpdate(
         userId,
         { $set: newUserData },
-        { new: true, lean: true, select: publicUser ? publicUserFilterString : '-passwordHash' },
+        { returnDocument: 'after', lean: true, select: publicUser ? publicUserFilterString : '-passwordHash' },
     ).exec();
 }
 
@@ -44,7 +44,7 @@ export async function updateUserRoom(userId: string, roomId: string | null, publ
     return User.findByIdAndUpdate(
         userId,
         { $set: { room: roomId } },
-        { new: true, lean: true, select: publicUser ? publicUserFilterString : '-passwordHash' },
+        { returnDocument: 'after', lean: true, select: publicUser ? publicUserFilterString : '-passwordHash' },
     ).exec();
 }
 
