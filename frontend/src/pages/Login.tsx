@@ -96,24 +96,7 @@ export default function Login() {
                 {...register('password')}
               />
 
-              <div className='flex items-center justify-between gap-3 text-sm'>
-                <label className='inline-flex items-center gap-2 text-slate-600 dark:text-slate-300'>
-                  <input
-                    type='checkbox'
-                    className='rounded border-slate-300 text-teal-500 focus:ring-teal-500'
-                  />
-                  Remember me
-                </label>
-              </div>
-
               <div className='flex flex-col items-center gap-2'>
-                <Link
-                  to='/forgot-password'
-                  className='font-medium text-teal-600 dark:text-teal-300 hover:underline'
-                  replace
-                >
-                  Forgot password?
-                </Link>
                 <button
                   type='submit'
                   className='inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-teal-500 px-4 py-3 font-semibold text-white transition hover:bg-teal-600'
