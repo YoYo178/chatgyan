@@ -112,12 +112,6 @@ export const useMutationBase = <PayloadType, ResponseType>(
           console.error('Unknown error occurred', err);
         }
       },
-
-      onSettled: (_data, _error, _variables, _context) => {
-        if (!options?.optimisticUpdate) {
-          queryClient.invalidateQueries({ queryKey });
-        }
-      },
     });
   };
 };

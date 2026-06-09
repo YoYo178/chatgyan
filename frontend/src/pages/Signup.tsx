@@ -8,8 +8,9 @@ import {
   IconUser,
   IconHash,
 } from '@tabler/icons-react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
+import { queryOptions, useQueryClient } from '@tanstack/react-query';
 import * as v from 'valibot';
 import { valibotResolver } from '@hookform/resolvers/valibot';
 import { useSignupMutation } from '@/api/hooks/auth/useSignupMutation';
@@ -52,6 +53,8 @@ const SignupSchema = v.pipe(
 type TSignupFormData = v.InferOutput<typeof SignupSchema>;
 
 export default function Signup() {
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -65,7 +68,15 @@ export default function Signup() {
   const { mutateAsync, isPending, isError, error } = useSignupMutation({});
 
   const onSubmit = async (data: TSignupFormData) => {
-    await mutateAsync({ payload: data });
+    try {
+      await mutateAsync({ payload: data });
+      await queryClient.invalidateQueries({
+        ...queryOptions({ queryKey: ['users', 'me'] }),
+      });
+      navigate('/dashboard', { replace: true });
+    } catch {
+      // Mutation state already captures the failure for the UI.
+    }
   };
 
   return (
