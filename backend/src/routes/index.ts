@@ -1,7 +1,8 @@
-import { Router } from "express";
-import AuthRouter from "./auth.routes.js";
-import UsersRouter from "./user.routes.js";
-import { requireAuth } from "@src/middlewares/auth.middleware.js";
+import { Router } from 'express';
+import AuthRouter from './auth.routes.js';
+import UsersRouter from './user.routes.js';
+import RoomRouter from './room.routes.js';
+import { requireAuth } from '@src/middlewares/auth.middleware.js';
 
 const APIRouter: Router = Router();
 
@@ -12,9 +13,10 @@ APIRouter.use('/auth', AuthRouter);
 APIRouter.use(requireAuth);
 
 APIRouter.use('/users', UsersRouter);
+APIRouter.use('/rooms', RoomRouter);
 
 APIRouter.get('/', (_req, res) => {
-    res.json({ success: true, message: 'API is working!' });
+  res.json({ success: true, message: 'API is working!' });
 });
 
 export default APIRouter;

@@ -8,8 +8,9 @@ export type HTTP_METHODS =
 
 type AUTH_ROUTES = 'LOGIN' | 'LOGOUT' | 'SIGNUP';
 type USER_ROUTES = 'GET_ME' | 'UPDATE_ME' | 'GET_USER';
+type ROOM_ROUTES = 'GET_ALL_ROOMS' | 'GET_ROOM_BY_ID';
 
-type API_ROUTES = AUTH_ROUTES | USER_ROUTES;
+type API_ROUTES = AUTH_ROUTES | USER_ROUTES | ROOM_ROUTES;
 
 export type Endpoint = {
   URL: string;
