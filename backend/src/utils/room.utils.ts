@@ -1,6 +1,7 @@
 import {
   DEFAULT_SYSTEM_ROOM_CONFIG,
   MAX_SYSTEM_ROOMS,
+  ROOM_NAMES,
 } from '@src/config/room.config.js';
 import { Room } from '@src/models/room.model.js';
 import type { IRoom, IRoomPublicView } from '@src/types/room.types.js';
@@ -12,15 +13,23 @@ export const populateRoomData = async () => {
   if (MAX_SYSTEM_ROOMS - rooms.length <= 0) return;
 
   logger.info('Generating system rooms...');
+  const availableRoomNames = [...ROOM_NAMES];
 
   for (let i = 0; i != MAX_SYSTEM_ROOMS; i++) {
-    const roomCode = `tkt${String(i + 1).padStart(3, '0')}`;
+    const roomCode = `cg${String(i + 1).padStart(3, '0')}`;
 
     if (rooms.find((room) => room.code === roomCode)) continue;
 
+    const roomName =
+      availableRoomNames[
+        Math.floor(Math.random() * availableRoomNames.length)
+      ] || 'General Room';
+
+    availableRoomNames.splice(availableRoomNames.indexOf(roomName), 1);
+
     await Room.create({
       ...DEFAULT_SYSTEM_ROOM_CONFIG,
-      name: `${DEFAULT_SYSTEM_ROOM_CONFIG.name} ${String(i + 1)}`,
+      name: roomName,
       code: roomCode,
       owner: null,
     });

@@ -34,6 +34,7 @@ import type {
   ServerToClientEvents,
   SocketData,
 } from './types/socket.types.js';
+import { populateRoomData } from './utils/room.utils.js';
 
 /* =========================================================================== */
 
@@ -109,4 +110,6 @@ app.use(errorHandler);
 const PORT = ENV.PORT || 3000;
 server.listen(PORT, () => {
   logger.info('Express server started on port: ' + ENV.PORT.toString());
+
+  populateRoomData();
 });
