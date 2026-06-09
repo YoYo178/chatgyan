@@ -32,7 +32,7 @@ export default function LandingPage() {
                     <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
                         <InfoCard
                             title='Real-time Group Chat'
-                            description='Persistent study rooms, TODO, and TODO that keep conversations organized.'
+                            description='Persistent study rooms, room filters, and a clean interface that keep conversations organized.'
                         />
 
                         <InfoCard
