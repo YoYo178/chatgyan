@@ -1,4 +1,4 @@
-import type { IDMRoom, IRoom, IRoomMember } from '@src/types/room.types.js';
+import type { IRoom, IRoomMember } from '@src/types/room.types.js';
 import mongoose from 'mongoose';
 
 const roomMemberSchema = new mongoose.Schema<IRoomMember>(
@@ -29,15 +29,3 @@ const roomSchema = new mongoose.Schema<IRoom>(
 );
 
 export const Room = mongoose.model<IRoom>('Room', roomSchema);
-
-const DMRoomSchema = new mongoose.Schema<IDMRoom>(
-  {
-    isActive: { type: Boolean, required: true },
-    members: [
-      { type: mongoose.Schema.Types.ObjectId, ref: 'IUser', required: true },
-    ],
-  },
-  { timestamps: true },
-);
-
-export const DMRoom = mongoose.model<IDMRoom>('DM', DMRoomSchema);
