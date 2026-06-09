@@ -18,6 +18,9 @@ export interface IRoom {
   /** Room owner */
   owner: mongoose.Types.ObjectId | null;
 
+  /** Room type */
+  type: 'topic' | 'course';
+
   /** Room members array */
   members: IRoomMember[];
 
@@ -38,16 +41,3 @@ export interface IRoom {
 }
 
 export type IRoomPublicView = Omit<IRoom, 'code' | 'members' | 'messages'>;
-
-export interface IDMRoom {
-  _id: mongoose.Types.ObjectId;
-
-  /** Whether the room is active (users are friends) or not (users were friends but not anymore) */
-  isActive: boolean;
-
-  /** Room members array */
-  members: [mongoose.Types.ObjectId, mongoose.Types.ObjectId];
-
-  createdAt: number;
-  updatedAt: number;
-}

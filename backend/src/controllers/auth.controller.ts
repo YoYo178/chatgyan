@@ -91,6 +91,19 @@ export const signup = async (req: Request, res: Response) => {
 
     const { passwordHash: _passwordHash, ...rest } = user;
 
+    const refreshToken = generateRefreshToken({ user: { id: user._id.toString(), email: user.email } });
+    const accessToken = generateAccessToken({ user: { id: user._id.toString(), email: user.email, username: user.username } });
+
+    res.cookie('accessToken', accessToken, {
+        ...cookieConfig,
+        maxAge: tokenConfig.accessToken.expiry,
+    });
+
+    res.cookie('refreshToken', refreshToken, {
+        ...cookieConfig,
+        maxAge: tokenConfig.refreshToken.expiry,
+    });
+
     res.status(HTTP_STATUS_CODES.Ok).json({
         success: true,
         message: 'User successfully registered',
