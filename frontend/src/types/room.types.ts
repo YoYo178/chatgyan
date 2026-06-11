@@ -10,6 +10,9 @@ export interface IRoom {
   /** Room name */
   name: string;
 
+  /** Room type's name (course name or topic name) */
+  typeName: string;
+
   /** Room type */
   type: 'topic' | 'course';
 

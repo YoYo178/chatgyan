@@ -39,6 +39,8 @@ export interface AckOptions<T> {
 export interface ClientToServerEvents {
   createRoom: (
     name: string,
+    type: 'topic' | 'course',
+    typeName: string,
     visibility: 'public' | 'private',
     memberLimit: number,
     ack: AckFunc<IRoom>,

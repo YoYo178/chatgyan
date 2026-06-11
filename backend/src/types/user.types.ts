@@ -18,6 +18,12 @@ export interface IUser {
     /** User's avatar URL */
     avatarURL: string;
 
+    /** User's course (if applicable) */
+    course: string;
+
+    /** User's year of study (if applicable) */
+    year: string;
+
     /** The room the user is currently in */
     room: mongoose.Types.ObjectId | null;
 

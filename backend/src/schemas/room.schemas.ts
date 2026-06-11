@@ -26,6 +26,8 @@ export type TRoomMemberParams = z.infer<typeof roomMemberParamsSchema>;
 // Create room
 export const createRoomSchema = z.object({
   name: z.string().min(1).max(100),
+  type: z.enum(['topic', 'course']),
+  typeName: z.string().min(1).max(100),
   visibility: z.enum(['public', 'private']),
   memberLimit: z.number().min(2).max(10),
 });

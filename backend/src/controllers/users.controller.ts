@@ -14,14 +14,16 @@ export const getMe = async (req: Request, res: Response) => {
 };
 
 export const updateMe = async (req: Request, res: Response) => {
-    const { name } = req.body as TUpdateMeBody;
+    const { fullName, course, year } = req.body as TUpdateMeBody;
 
     const user = await User.findById(req.user.id).select('-passwordHash').exec();
 
     if (!user)
         throw new APIError('User not found', HTTP_STATUS_CODES.NotFound);
 
-    user.name = name ?? user.name;
+    user.fullName = fullName ?? user.fullName;
+    user.course = course ?? user.course;
+    user.year = year ?? user.year;
 
     await user.save();
 
@@ -33,7 +35,7 @@ export const getUser = async (req: Request, res: Response) => {
     const user = await User.findById(userId)
         .select(`
             -passwordHash
-            -name
+            -fullName
             -email
             -room
             -updatedAt

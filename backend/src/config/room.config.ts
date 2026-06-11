@@ -14,6 +14,7 @@ export const DEFAULT_SYSTEM_ROOM_CONFIG: Omit<
   visibility: 'public',
   owner: null,
   type: 'course',
+  typeName: '',
 };
 
 export const ROOM_NAMES = ['General Discussion', 'Study Group', 'Q&A Session'];

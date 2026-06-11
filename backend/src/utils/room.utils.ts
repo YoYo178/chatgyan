@@ -30,6 +30,7 @@ export const populateRoomData = async () => {
     await Room.create({
       ...DEFAULT_SYSTEM_ROOM_CONFIG,
       name: roomName,
+      typeName: roomName,
       code: roomCode,
       owner: null,
     });

@@ -20,7 +20,7 @@ export const getCreateRoomEventCallback = (
   _: ChatGyanSocketServer,
   socket: ChatGyanSocket,
 ): ClientToServerEvents['createRoom'] => {
-  return async (name, visibility, memberLimit, ack) => {
+  return async (name, type, typeName, visibility, memberLimit, ack) => {
     if (!socket.data?.user) {
       logger.warn('Unauthenticated user attempted to create room');
       return;
@@ -28,7 +28,7 @@ export const getCreateRoomEventCallback = (
 
     try {
       // Validate input
-      createRoomSchema.parse({ name, visibility, memberLimit });
+      createRoomSchema.parse({ name, type, typeName, visibility, memberLimit });
 
       const userId = socket.data.user.id;
       const user = await getUser(userId);
@@ -62,6 +62,8 @@ export const getCreateRoomEventCallback = (
       const newRoom = await createRoom({
         name,
         code: generateRoomCode(DEFAULT_ROOM_CODE_LENGTH),
+        type,
+        typeName,
         memberLimit,
         members: [],
         isSystemGenerated: false,
@@ -80,7 +82,7 @@ export const getCreateRoomEventCallback = (
       logger.info(`${socket.data.user.id} created and joined room ${roomId}`, {
         userId: socket.data.user.id,
         roomId,
-        roomData: { name, visibility, memberLimit },
+        roomData: { name, type, typeName, visibility, memberLimit },
       });
 
       // Broadcast the member join event to everyone in this room (except the joiner)
@@ -93,7 +95,7 @@ export const getCreateRoomEventCallback = (
     } catch (err) {
       logger.error('Error creating room', {
         userId: socket.data.user.id,
-        roomData: { name, visibility, memberLimit },
+        roomData: { name, type, typeName, visibility, memberLimit },
         error: err instanceof Error ? err.message : 'Unknown error',
         stack: err instanceof Error ? err.stack : undefined,
       });

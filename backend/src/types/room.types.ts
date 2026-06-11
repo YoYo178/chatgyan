@@ -21,6 +21,9 @@ export interface IRoom {
   /** Room type */
   type: 'topic' | 'course';
 
+  /** Room type's name (topic name or course name) */
+  typeName: string;
+
   /** Room members array */
   members: IRoomMember[];
 

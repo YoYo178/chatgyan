@@ -14,6 +14,8 @@ const roomSchema = new mongoose.Schema<IRoom>(
   {
     name: { type: String, required: true },
     code: { type: String, required: true },
+    type: { type: String, enum: ['topic', 'course'], required: true },
+    typeName: { type: String, required: true },
     memberLimit: { type: Number, required: false, default: 10 },
     memberCount: { type: Number, required: false, default: 0 },
     members: { type: [roomMemberSchema], required: false, default: [] },

@@ -11,6 +11,9 @@ const userSchema = new mongoose.Schema<IUser>({
 
     avatarURL: { type: String, required: false, default: '' },
 
+    course: { type: String, required: false, default: '-' },
+    year: { type: String, required: false, default: '-' },
+
     room: { type: mongoose.Schema.Types.ObjectId, ref: 'Room', default: null },
 }, { timestamps: true });
 
