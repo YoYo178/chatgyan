@@ -5,6 +5,7 @@ import type {
 import logger from '@src/utils/logger.utils.js';
 
 import { registerRoomHandlers } from './handlers/room/index.js';
+import { registerMessageHandlers } from './handlers/message/index.js';
 import { registerGeneralHandlers } from './handlers/general/index.js';
 
 export function handleSocketConnection(
@@ -26,4 +27,5 @@ export function handleSocketConnection(
 
   registerGeneralHandlers(io, socket);
   registerRoomHandlers(io, socket);
+  registerMessageHandlers(io, socket);
 }
