@@ -1,10 +1,6 @@
 import type { Socket } from 'socket.io-client';
 import type { IRoom } from './room.types';
-
-// TODO
-interface BanDetails {
-  reason: unknown;
-}
+import type { IMessage } from './message.types';
 
 export interface ServerToClientEvents {
   /** For users NOT in a room */
@@ -21,12 +17,8 @@ export interface ServerToClientEvents {
     kickedBy: string,
     reason: string,
   ) => void;
-  memberBanned: (
-    roomId: string,
-    userId: string,
-    bannedBy: string,
-    banDetails: BanDetails,
-  ) => void;
+
+  newMessage: (roomId: string, userId: string, message: IMessage) => void;
 }
 
 // This generic represents the data type that is to be sent with the ack, null by default
@@ -54,10 +46,12 @@ export interface ClientToServerEvents {
   ) => void;
   joinRoom: (
     payload: { method: 'code' | 'id'; data: string },
-    ack: AckFunc<{ roomId: string; ban?: Omit<BanDetails, 'reason'> }>,
+    ack: AckFunc<{ roomId: string }>,
   ) => void;
   leaveRoom: (roomId: string, ack: AckFunc) => void;
   deleteRoom: (roomId: string, ack: AckFunc) => void;
+
+  sendMessage: (roomId: string, message: string, ack: AckFunc) => void;
 }
 
 export type ChatGyanSocket = Socket<ServerToClientEvents, ClientToServerEvents>;

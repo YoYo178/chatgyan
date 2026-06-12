@@ -8,13 +8,6 @@ export const roomIdParamsSchema = z.object({
 
 export type TRoomIdParams = z.infer<typeof roomIdParamsSchema>;
 
-// Friend ID schema
-export const friendIdParamsSchema = z.object({
-  friendId: mongooseObjectId,
-});
-
-export type TFriendIdParams = z.infer<typeof friendIdParamsSchema>;
-
 // Room ID + User ID schema
 export const roomMemberParamsSchema = z.object({
   roomId: mongooseObjectId,
@@ -48,16 +41,6 @@ export const leaveRoomSchema = z.object({
 });
 
 export type TLeaveRoomBody = z.infer<typeof leaveRoomSchema>;
-
-export const banFromRoomSchema = z.object({
-  roomId: mongooseObjectId,
-  userId: mongooseObjectId,
-  bannedBy: mongooseObjectId,
-  duration: z.number(),
-  reason: z.string().optional(),
-});
-
-export type TBanFromRoomPayload = z.infer<typeof banFromRoomSchema>;
 
 export const kickFromRoomSchema = z.object({
   roomId: mongooseObjectId,
