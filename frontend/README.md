@@ -1,73 +1,139 @@
-# React + TypeScript + Vite
+# ChatGyan Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The frontend application for ChatGyan, a real-time collaborative learning platform built using React, TypeScript, and Socket.io.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+This application provides the user interface for ChatGyan, allowing users to authenticate, create and join chat rooms, communicate in real time, and manage their learning communities through a responsive web interface.
 
-## React Compiler
+## Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Authentication
 
-## Expanding the ESLint configuration
+- User registration
+- User login
+- JWT-based session management
+- Protected routes
+- Automatic authentication state handling
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Chat Experience
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Real-time messaging
+- Room-based conversations
+- Message timestamps
+- Live participant updates
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Room Management
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Browse available rooms
+- Create new rooms
+- Join and leave rooms
+- View room participants
+
+### User Interface
+
+- Responsive design
+- Modern chat layout
+- Mobile-friendly experience
+- Fast client-side navigation
+- Loading and error states
+
+## Tech Stack
+
+- React.js
+- TypeScript
+- Vite
+- React Query (TanStack Query)
+- React Router
+- Socket.io Client
+- Tailwind CSS
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js v18+
+- Running ChatGyan Backend instance
+
+### Installation
+
+```bash
+git clone <repository-url>
+cd client
+
+pnpm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Environment Variables
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Create a `.env` file or use the already provided `.env.example` file:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+VITE_DEV_SERVER_URL=http://localhost:3000
+VITE_SERVER_URL=https://example.com
 ```
+
+### Run Development Server
+
+```bash
+pnpm run dev
+```
+
+Application will be available at:
+
+```text
+http://localhost:5173
+```
+
+## Build for Production
+
+```bash
+pnpm run build
+```
+
+Preview production build:
+
+```bash
+pnpm run preview
+```
+
+## Folder Structure
+
+```text
+src/
+│
+├── api/
+├── components/
+├── hooks/
+├── lib/
+├── pages/
+├── types/
+│
+├── App.tsx
+├── index.css
+└── main.tsx
+```
+
+## Responsibilities
+
+The frontend is responsible for:
+
+- Rendering user interfaces
+- Managing client-side state
+- Handling authentication tokens
+- Connecting to Socket.io
+- Communicating with backend APIs
+- Displaying real-time updates
+
+## Available Scripts
+
+```bash
+pnpm run dev
+pnpm run build
+pnpm run preview
+pnpm run lint
+```
+
+## License
+
+Part of the ChatGyan project.
