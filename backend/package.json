@@ -5,13 +5,13 @@
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "build": "pnpm run lint && tsc --build tsconfig.prod.json",
+    "build": "pnpm run lint && tsc --build tsconfig.json && tsc-alias",
     "clean-install": "rm -rf ./node_modules && rm -r pnpm-lock.yaml && pnpm install",
     "dev": "cross-env NODE_ENV=development node --env-file=./config/.env.development -r ts-node/register ./src",
     "dev:hot": "nodemon --exec \"pnpm run dev\" --watch ./src --ext .ts",
     "lint": "eslint .",
-    "start": "cross-env NODE_ENV=production node --env-file=./config/.env.production -r module-alias/register ./dist",
-    "phantom-start": "cross-env NODE_ENV=production node -r module-alias/register ./dist",
+    "start": "cross-env NODE_ENV=production node --env-file=./config/.env.production ./dist",
+    "phantom-start": "cross-env NODE_ENV=production node ./dist",
     "test": "cross-env NODE_ENV=test vitest",
     "type-check": "tsc --noEmit"
   },
@@ -52,6 +52,7 @@
     "husky": "^9.1.7",
     "nodemon": "^3.1.14",
     "prettier": "^3.8.3",
+    "tsc-alias": "^1.8.17",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.59.2"
