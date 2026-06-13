@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router';
 import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import ChatPage from './pages/ChatPage';
 import { useLayoutEffect } from 'react';
 import GuestRoute from './pages/wrappers/GuestRoute';
 import UserRoute from './pages/wrappers/UserRoute';
@@ -24,7 +25,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<UserRoute />}>
-          <Route path='/dashboard' element={<h1>TODO</h1>} />
+          <Route path='/dashboard' element={<ChatPage />} />
         </Route>
         
         <Route element={<GuestRoute />}>

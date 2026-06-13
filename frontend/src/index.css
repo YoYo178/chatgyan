@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -162,4 +163,8 @@
     ::-webkit-scrollbar-thumb:hover {
         background: linear-gradient(180deg, rgba(45, 212, 191, 0.7), rgba(56, 189, 248, 0.7));
     }
+}
+
+.chat-display-font {
+    font-family: 'Space Grotesk', 'Inter Variable', sans-serif;
 }
