@@ -42,12 +42,12 @@ export default function ParticipantEntry({
           <span className='text-sm font-semibold'>{initials}</span>
         </div>
         <div>
-          <p className='text-sm font-semibold text-slate-100'>
+          <p className='text-sm font-semibold text-slate-100 wrap-anywhere'>
             {displayName}
             {isCurrentUser ? ' (You)' : ''}
           </p>
           {user?.username && (
-            <p className='text-xs text-slate-500'>@{user?.username}</p>
+            <p className='text-xs text-slate-500 wrap-anywhere'>@{user?.username}</p>
           )}
           <p className='text-xs text-slate-500'>
             Joined {formatJoinTime(joinTimestamp)}
