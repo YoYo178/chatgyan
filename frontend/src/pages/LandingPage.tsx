@@ -1,4 +1,5 @@
 import InfoCard from "@/components/InfoCard";
+import { Link } from "react-router";
 
 export default function LandingPage() {
     return (
@@ -56,12 +57,12 @@ export default function LandingPage() {
                     <div className='w-full md:w-1/2 md:flex-1 px-8 py-8 border-l border-r rounded-4xl'>
                         <h3 className='text-xl font-semibold'>Ready to collaborate smarter?</h3>
                         <p className='mt-2 text-slate-600 dark:text-slate-300'>Join fellow online students and reclaim your time.</p>
-                        <a id='signup' href='/signup' className='mt-4 inline-block bg-teal-500 hover:bg-teal-600 text-white px-5 py-2 rounded-md font-semibold'>Create an account</a>
+                        <Link id='signup' to='/signup' className='mt-4 inline-block bg-teal-500 hover:bg-teal-600 text-white px-5 py-2 rounded-md font-semibold'>Create an account</Link>
                     </div>
                     <div className='w-full md:w-1/2 md:flex-1 px-8 py-8 border-l border-r rounded-4xl'>
                         <h3 className='text-xl font-semibold'>Already a collaborator?</h3>
                         <p className='mt-2 text-slate-600 dark:text-slate-300'>Log in to your existing account and start collaborating.</p>
-                        <a id='login' href='/login' className='mt-4 inline-block bg-teal-500 hover:bg-teal-600 text-white px-5 py-2 rounded-md font-semibold'>Log in</a>
+                        <Link id='login' to='/login' className='mt-4 inline-block bg-teal-500 hover:bg-teal-600 text-white px-5 py-2 rounded-md font-semibold'>Log in</Link>
                     </div>
                 </section>
             </main>
@@ -69,10 +70,6 @@ export default function LandingPage() {
             <footer className='flex justify-between items-center text-sm bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 border-t border-slate-100 dark:border-slate-700 py-8'>
                 <div className='max-w-6xl px-4 mx-auto w-full flex flex-col md:flex-row justify-between items-center gap-4'>
                     <div>© {new Date().getFullYear()} ChatGyan — Built for students.</div>
-                    <div className='flex gap-4'>
-                        <a href='/privacy' className='hover:underline'>Privacy</a>
-                        <a href='/terms' className='hover:underline'>Terms</a>
-                    </div>
                 </div>
             </footer>
         </>
