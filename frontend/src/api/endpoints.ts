@@ -39,4 +39,10 @@ export const APIEndpoints: Endpoints = {
     METHOD: 'GET',
     URL: '/rooms/:roomId',
   },
+
+  // Message routes
+  GET_MESSAGES: {
+    METHOD: 'GET',
+    URL: '/messages',
+  },
 };

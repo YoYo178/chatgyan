@@ -35,7 +35,7 @@ export const useInfiniteQueryBase = <ResponseType>(
     // eslint-disable-next-line react-hooks/rules-of-hooks
     return useInfiniteQuery({
       ...infiniteQueryOptions({
-        queryKey: [...queryKey, sendCookies, endpoint.URL],
+        queryKey: [...queryKey],
         queryFn: async ({ pageParam }) => {
           let finalURL = endpoint.URL;
 
