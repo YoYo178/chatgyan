@@ -142,19 +142,6 @@ pnpm run dev
 ```
 
 ## Project Structure
-
-│
-├── api/
-├── components/
-├── hooks/
-├── lib/
-├── pages/
-├── types/
-│
-├── App.tsx
-├── index.css
-├── main.tsx
-
 ```text
 chatgyan/
 │
