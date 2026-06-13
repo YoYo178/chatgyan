@@ -20,7 +20,7 @@ export const getUpdateRoomEventCallback = (
 
     try {
       // Validate input
-      updateRoomSchema.parse({ name, visibility, memberLimit });
+      updateRoomSchema.parse({ roomId, name, visibility, memberLimit });
 
       const userId = socket.data.user.id;
       const user = await getUser(userId);
