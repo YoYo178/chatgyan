@@ -22,7 +22,7 @@ function App() {
   }, [userPrefersDark]);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename='/chatgyan'>
       <Routes>
         <Route element={<UserRoute />}>
           <Route path='/dashboard' element={<ChatPage />} />
