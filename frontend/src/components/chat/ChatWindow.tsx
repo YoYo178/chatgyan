@@ -644,7 +644,7 @@ export default function ChatWindow() {
                   type='button'
                   onClick={handleJoinSelectedRoom}
                   className='inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/15 px-4 py-2.5 text-sm font-semibold text-emerald-100 transition hover:border-emerald-300/50 hover:bg-emerald-400/20 disabled:text-muted-foreground disabled:hover:bg-emerald-400/15 disabled:hover:border-emerald-400/30 disabled:cursor-not-allowed'
-                  disabled={room.visibility === 'private'}
+                  disabled={room.visibility === 'private' && room.owner !== me?._id}
                 >
                   Join
                 </button>
