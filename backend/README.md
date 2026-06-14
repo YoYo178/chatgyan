@@ -190,7 +190,6 @@ roomUpdated
 roomDeleted
 memberJoined
 memberLeft
-memberKicked
 newMessage
 ```
 

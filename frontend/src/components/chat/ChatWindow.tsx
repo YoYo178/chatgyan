@@ -616,7 +616,7 @@ export default function ChatWindow() {
           </div>
 
           <div className='mt-auto flex flex-col gap-4'>
-            {room.visibility === 'private' && (
+            {room.visibility === 'private' && room.owner !== me?._id && (
               <div className='flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-800/70 bg-slate-950/40 px-4 py-3'>
                 <div>
                   <p className='text-xs uppercase tracking-[0.2em] text-slate-500'>
