@@ -22,15 +22,12 @@ import {
   IconX,
 } from '@tabler/icons-react';
 import { queryOptions, useQueryClient } from '@tanstack/react-query';
-import {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type ReactNode,
-} from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import { startListeningRoomEvents, stopListeningRoomEvents } from '@/api/socket/room.sockets';
+import {
+  startListeningRoomEvents,
+  stopListeningRoomEvents,
+} from '@/api/socket/room.sockets';
 
 const linkPattern = /https?:\/\/[^\s<]+/gi;
 
@@ -96,7 +93,9 @@ function renderMessageContent(
   return parts.length > 0 ? parts : [text];
 }
 
-function flattenMessages(pages: { data?: { messages?: IMessage[] } }[] | undefined) {
+function flattenMessages(
+  pages: { data?: { messages?: IMessage[] } }[] | undefined,
+) {
   if (!pages?.length) return [];
 
   const seen = new Set<string>();
@@ -222,7 +221,8 @@ export default function ChatWindow() {
       return;
     }
 
-    const heightDelta = container.scrollHeight - previousScrollHeightRef.current;
+    const heightDelta =
+      container.scrollHeight - previousScrollHeightRef.current;
     if (heightDelta > 0) {
       container.scrollTop += heightDelta;
     }
@@ -259,8 +259,12 @@ export default function ChatWindow() {
 
             setJoinedRoomId(null);
 
-            queryClient.invalidateQueries({ ...queryOptions({ queryKey: ['rooms'] }) });
-            queryClient.invalidateQueries({ ...queryOptions({ queryKey: ['users', 'me'] }) });
+            queryClient.invalidateQueries({
+              ...queryOptions({ queryKey: ['rooms'] }),
+            });
+            queryClient.invalidateQueries({
+              ...queryOptions({ queryKey: ['users', 'me'] }),
+            });
           }
 
           resolve();
@@ -273,8 +277,12 @@ export default function ChatWindow() {
       { method: 'id', data: activeRoomId },
       ({ success, data }) => {
         if (success && data?.roomId) {
-          queryClient.invalidateQueries({ ...queryOptions({ queryKey: ['rooms'] }) });
-          queryClient.invalidateQueries({ ...queryOptions({ queryKey: ['users', 'me'] }) });
+          queryClient.invalidateQueries({
+            ...queryOptions({ queryKey: ['rooms'] }),
+          });
+          queryClient.invalidateQueries({
+            ...queryOptions({ queryKey: ['users', 'me'] }),
+          });
           startListeningRoomEvents(socket, queryClient);
           setJoinedRoomId(selectedRoomId);
           setSelectedRoomId(null);
@@ -369,161 +377,161 @@ export default function ChatWindow() {
 
   const linkDialog = pendingLink
     ? createPortal(
-      <div className='fixed inset-0 z-50 flex items-end justify-center bg-slate-950/75 px-0 backdrop-blur-sm sm:items-center sm:px-4'>
-        <button
-          type='button'
-          aria-label='Close link dialog'
-          className='absolute inset-0 cursor-default'
-          onClick={() => setPendingLink(null)}
-        />
+        <div className='fixed inset-0 z-50 flex items-end justify-center bg-slate-950/75 px-0 backdrop-blur-sm sm:items-center sm:px-4'>
+          <button
+            type='button'
+            aria-label='Close link dialog'
+            className='absolute inset-0 cursor-default'
+            onClick={() => setPendingLink(null)}
+          />
 
-        <div className='relative z-10 w-full rounded-t-3xl border border-slate-800/80 bg-slate-950/95 p-4 shadow-2xl shadow-slate-950/60 ring-1 ring-white/5 sm:max-w-lg sm:rounded-3xl sm:p-6'>
-          <div className='mb-4 flex items-start justify-between gap-4'>
-            <div className='space-y-2'>
-              <p className='text-xs uppercase tracking-[0.28em] text-sky-300/70'>
-                External link
+          <div className='relative z-10 w-full rounded-t-3xl border border-slate-800/80 bg-slate-950/95 p-4 shadow-2xl shadow-slate-950/60 ring-1 ring-white/5 sm:max-w-lg sm:rounded-3xl sm:p-6'>
+            <div className='mb-4 flex items-start justify-between gap-4'>
+              <div className='space-y-2'>
+                <p className='text-xs uppercase tracking-[0.28em] text-sky-300/70'>
+                  External link
+                </p>
+                <h3 className='chat-display-font text-2xl font-semibold text-slate-50'>
+                  Open this resource?
+                </h3>
+                <p className='text-sm leading-6 text-slate-400'>
+                  Students often share notes, docs, or video references. Review
+                  the link before you continue.
+                </p>
+              </div>
+
+              <button
+                type='button'
+                onClick={() => setPendingLink(null)}
+                className='inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-800 bg-slate-900/80 text-slate-300 transition hover:border-slate-700 hover:text-slate-100'
+              >
+                <IconX className='h-5 w-5' />
+              </button>
+            </div>
+
+            <div className='rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-sm text-slate-300'>
+              <p className='text-xs uppercase tracking-[0.22em] text-slate-500'>
+                Destination
               </p>
-              <h3 className='chat-display-font text-2xl font-semibold text-slate-50'>
-                Open this resource?
-              </h3>
-              <p className='text-sm leading-6 text-slate-400'>
-                Students often share notes, docs, or video references. Review
-                the link before you continue.
+              <p className='mt-2 break-all font-medium text-slate-100'>
+                {pendingLink}
               </p>
             </div>
 
-            <button
-              type='button'
-              onClick={() => setPendingLink(null)}
-              className='inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-800 bg-slate-900/80 text-slate-300 transition hover:border-slate-700 hover:text-slate-100'
-            >
-              <IconX className='h-5 w-5' />
-            </button>
+            <div className='mt-5 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end'>
+              <button
+                type='button'
+                onClick={() => setPendingLink(null)}
+                className='inline-flex items-center justify-center rounded-full border border-slate-800 bg-slate-900/60 px-4 py-2.5 text-sm font-medium text-slate-200 transition hover:border-slate-700 hover:text-slate-50'
+              >
+                Cancel
+              </button>
+              <button
+                type='button'
+                onClick={() => {
+                  if (pendingLink) {
+                    window.open(pendingLink, '_blank', 'noopener,noreferrer');
+                  }
+                  setPendingLink(null);
+                }}
+                className='inline-flex items-center justify-center gap-2 rounded-full border border-sky-400/30 bg-sky-400/15 px-4 py-2.5 text-sm font-semibold text-sky-100 transition hover:border-sky-300/50 hover:bg-sky-400/20'
+              >
+                Open link
+                <IconExternalLink className='h-4 w-4' />
+              </button>
+            </div>
           </div>
-
-          <div className='rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-sm text-slate-300'>
-            <p className='text-xs uppercase tracking-[0.22em] text-slate-500'>
-              Destination
-            </p>
-            <p className='mt-2 break-all font-medium text-slate-100'>
-              {pendingLink}
-            </p>
-          </div>
-
-          <div className='mt-5 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end'>
-            <button
-              type='button'
-              onClick={() => setPendingLink(null)}
-              className='inline-flex items-center justify-center rounded-full border border-slate-800 bg-slate-900/60 px-4 py-2.5 text-sm font-medium text-slate-200 transition hover:border-slate-700 hover:text-slate-50'
-            >
-              Cancel
-            </button>
-            <button
-              type='button'
-              onClick={() => {
-                if (pendingLink) {
-                  window.open(pendingLink, '_blank', 'noopener,noreferrer');
-                }
-                setPendingLink(null);
-              }}
-              className='inline-flex items-center justify-center gap-2 rounded-full border border-sky-400/30 bg-sky-400/15 px-4 py-2.5 text-sm font-semibold text-sky-100 transition hover:border-sky-300/50 hover:bg-sky-400/20'
-            >
-              Open link
-              <IconExternalLink className='h-4 w-4' />
-            </button>
-          </div>
-        </div>
-      </div>,
-      document.body,
-    )
+        </div>,
+        document.body,
+      )
     : null;
 
   const deleteDialog = isDeleteModalOpen
     ? createPortal(
-      <div className='fixed inset-0 z-50 flex items-end justify-center bg-slate-950/75 px-0 backdrop-blur-sm sm:items-center sm:px-4'>
-        <button
-          type='button'
-          aria-label='Close delete room dialog'
-          className='absolute inset-0 cursor-default'
-          onClick={() => {
-            if (isDeleting) return;
-            setIsDeleteModalOpen(false);
-            setDeleteError(null);
-          }}
-        />
+        <div className='fixed inset-0 z-50 flex items-end justify-center bg-slate-950/75 px-0 backdrop-blur-sm sm:items-center sm:px-4'>
+          <button
+            type='button'
+            aria-label='Close delete room dialog'
+            className='absolute inset-0 cursor-default'
+            onClick={() => {
+              if (isDeleting) return;
+              setIsDeleteModalOpen(false);
+              setDeleteError(null);
+            }}
+          />
 
-        <div className='relative z-10 w-full rounded-t-3xl border border-slate-800/80 bg-slate-950/95 p-4 shadow-2xl shadow-slate-950/60 ring-1 ring-white/5 sm:max-w-lg sm:rounded-3xl sm:p-6'>
-          <div className='mb-4 flex items-start justify-between gap-4'>
-            <div className='space-y-2'>
-              <p className='text-xs uppercase tracking-[0.28em] text-rose-300/70'>
-                Delete room
+          <div className='relative z-10 w-full rounded-t-3xl border border-slate-800/80 bg-slate-950/95 p-4 shadow-2xl shadow-slate-950/60 ring-1 ring-white/5 sm:max-w-lg sm:rounded-3xl sm:p-6'>
+            <div className='mb-4 flex items-start justify-between gap-4'>
+              <div className='space-y-2'>
+                <p className='text-xs uppercase tracking-[0.28em] text-rose-300/70'>
+                  Delete room
+                </p>
+                <h3 className='chat-display-font text-2xl font-semibold text-slate-50'>
+                  Delete this room permanently?
+                </h3>
+                <p className='text-sm leading-6 text-slate-400'>
+                  This action cannot be undone. All messages will be removed and
+                  every member will be disconnected from the study session.
+                </p>
+              </div>
+
+              <button
+                type='button'
+                onClick={() => {
+                  if (isDeleting) return;
+                  setIsDeleteModalOpen(false);
+                  setDeleteError(null);
+                }}
+                disabled={isDeleting}
+                className='inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-800 bg-slate-900/80 text-slate-300 transition hover:border-slate-700 hover:text-slate-100 disabled:cursor-not-allowed disabled:opacity-60'
+              >
+                <IconX className='h-5 w-5' />
+              </button>
+            </div>
+
+            <div className='rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-sm text-slate-300'>
+              <p className='text-xs uppercase tracking-[0.22em] text-slate-500'>
+                Room to delete
               </p>
-              <h3 className='chat-display-font text-2xl font-semibold text-slate-50'>
-                Delete this room permanently?
-              </h3>
-              <p className='text-sm leading-6 text-slate-400'>
-                This action cannot be undone. All messages will be removed and
-                every member will be disconnected from the study session.
+              <p className='mt-2 font-medium text-slate-100'>
+                {room?.name ?? 'Study room'}
+              </p>
+              <p className='mt-1 text-xs text-slate-500'>
+                {room?.typeName ?? 'Room details'} ·{' '}
+                {roomSummary?.membersLabel ?? 'Members unavailable'}
               </p>
             </div>
 
-            <button
-              type='button'
-              onClick={() => {
-                if (isDeleting) return;
-                setIsDeleteModalOpen(false);
-                setDeleteError(null);
-              }}
-              disabled={isDeleting}
-              className='inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-800 bg-slate-900/80 text-slate-300 transition hover:border-slate-700 hover:text-slate-100 disabled:cursor-not-allowed disabled:opacity-60'
-            >
-              <IconX className='h-5 w-5' />
-            </button>
-          </div>
+            {deleteError && (
+              <p className='mt-4 text-sm text-rose-300'>{deleteError}</p>
+            )}
 
-          <div className='rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-sm text-slate-300'>
-            <p className='text-xs uppercase tracking-[0.22em] text-slate-500'>
-              Room to delete
-            </p>
-            <p className='mt-2 font-medium text-slate-100'>
-              {room?.name ?? 'Study room'}
-            </p>
-            <p className='mt-1 text-xs text-slate-500'>
-              {room?.typeName ?? 'Room details'} ·{' '}
-              {roomSummary?.membersLabel ?? 'Members unavailable'}
-            </p>
+            <div className='mt-5 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end'>
+              <button
+                type='button'
+                onClick={() => {
+                  setIsDeleteModalOpen(false);
+                  setDeleteError(null);
+                }}
+                disabled={isDeleting}
+                className='inline-flex items-center justify-center rounded-full border border-slate-800 bg-slate-900/60 px-4 py-2.5 text-sm font-medium text-slate-200 transition hover:border-slate-700 hover:text-slate-50 disabled:cursor-not-allowed disabled:opacity-60'
+              >
+                Cancel
+              </button>
+              <button
+                type='button'
+                onClick={handleDeleteRoom}
+                disabled={isDeleting}
+                className='inline-flex items-center justify-center gap-2 rounded-full border border-rose-400/30 bg-rose-400/15 px-4 py-2.5 text-sm font-semibold text-rose-100 transition hover:border-rose-300/50 hover:bg-rose-400/20 disabled:cursor-not-allowed disabled:opacity-60'
+              >
+                <IconTrash className='h-4 w-4' />
+                {isDeleting ? 'Deleting...' : 'Delete room'}
+              </button>
+            </div>
           </div>
-
-          {deleteError && (
-            <p className='mt-4 text-sm text-rose-300'>{deleteError}</p>
-          )}
-
-          <div className='mt-5 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end'>
-            <button
-              type='button'
-              onClick={() => {
-                setIsDeleteModalOpen(false);
-                setDeleteError(null);
-              }}
-              disabled={isDeleting}
-              className='inline-flex items-center justify-center rounded-full border border-slate-800 bg-slate-900/60 px-4 py-2.5 text-sm font-medium text-slate-200 transition hover:border-slate-700 hover:text-slate-50 disabled:cursor-not-allowed disabled:opacity-60'
-            >
-              Cancel
-            </button>
-            <button
-              type='button'
-              onClick={handleDeleteRoom}
-              disabled={isDeleting}
-              className='inline-flex items-center justify-center gap-2 rounded-full border border-rose-400/30 bg-rose-400/15 px-4 py-2.5 text-sm font-semibold text-rose-100 transition hover:border-rose-300/50 hover:bg-rose-400/20 disabled:cursor-not-allowed disabled:opacity-60'
-            >
-              <IconTrash className='h-4 w-4' />
-              {isDeleting ? 'Deleting...' : 'Delete room'}
-            </button>
-          </div>
-        </div>
-      </div>,
-      document.body,
-    )
+        </div>,
+        document.body,
+      )
     : null;
 
   if (!activeRoomId) {
@@ -607,30 +615,47 @@ export default function ChatWindow() {
             </div>
           </div>
 
-          <div className='mt-auto flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-800/70 bg-slate-950/40 px-4 py-3'>
-            <div>
-              <p className='text-xs uppercase tracking-[0.2em] text-slate-500'>
-                Room actions
-              </p>
-              <p className='text-sm text-slate-300'>
-                Join this room or cancel the selection.
-              </p>
-            </div>
-            <div className='flex flex-wrap items-center gap-2'>
-              <button
-                type='button'
-                onClick={handleJoinSelectedRoom}
-                className='inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/15 px-4 py-2.5 text-sm font-semibold text-emerald-100 transition hover:border-emerald-300/50 hover:bg-emerald-400/20'
-              >
-                Join
-              </button>
-              <button
-                type='button'
-                onClick={handleCancelSelection}
-                className='inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/60 px-4 py-2.5 text-sm font-medium text-slate-200 transition hover:border-slate-700 hover:text-slate-50'
-              >
-                Cancel
-              </button>
+          <div className='mt-auto flex flex-col gap-4'>
+            {room.visibility === 'private' && (
+              <div className='flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-800/70 bg-slate-950/40 px-4 py-3'>
+                <div>
+                  <p className='text-xs uppercase tracking-[0.2em] text-slate-500'>
+                    Notice
+                  </p>
+                  <p className='text-sm text-slate-300'>
+                    This room cannot be joined directly from the room browser.
+                    You must obtain the room code from the room owner and join
+                    using that code.
+                  </p>
+                </div>
+              </div>
+            )}
+            <div className='flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-800/70 bg-slate-950/40 px-4 py-3'>
+              <div>
+                <p className='text-xs uppercase tracking-[0.2em] text-slate-500'>
+                  Room actions
+                </p>
+                <p className='text-sm text-slate-300'>
+                  Join this room or cancel the selection.
+                </p>
+              </div>
+              <div className='flex flex-wrap items-center gap-2'>
+                <button
+                  type='button'
+                  onClick={handleJoinSelectedRoom}
+                  className='inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/15 px-4 py-2.5 text-sm font-semibold text-emerald-100 transition hover:border-emerald-300/50 hover:bg-emerald-400/20 disabled:text-muted-foreground disabled:hover:bg-emerald-400/15 disabled:hover:border-emerald-400/30 disabled:cursor-not-allowed'
+                  disabled={room.visibility === 'private'}
+                >
+                  Join
+                </button>
+                <button
+                  type='button'
+                  onClick={handleCancelSelection}
+                  className='inline-flex items-center gap-2 rounded-full border border-slate-800 bg-slate-900/60 px-4 py-2.5 text-sm font-medium text-slate-200 transition hover:border-slate-700 hover:text-slate-50'
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -649,8 +674,9 @@ export default function ChatWindow() {
           className='flex w-full items-center gap-3 px-3 py-2.5 text-left transition hover:bg-slate-900/40 sm:px-4 sm:py-3'
         >
           <span
-            className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-slate-800/80 bg-slate-900/70 text-slate-300 transition-transform duration-300 ${isRoomHeaderExpanded ? 'rotate-180' : ''
-              }`}
+            className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-slate-800/80 bg-slate-900/70 text-slate-300 transition-transform duration-300 ${
+              isRoomHeaderExpanded ? 'rotate-180' : ''
+            }`}
           >
             <IconChevronDown className='h-4 w-4' />
           </span>
@@ -682,8 +708,9 @@ export default function ChatWindow() {
 
         <div
           id='room-header-details'
-          className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${isRoomHeaderExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
-            }`}
+          className={`grid transition-[grid-template-rows] duration-300 ease-in-out ${
+            isRoomHeaderExpanded ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+          }`}
         >
           <div className='overflow-hidden'>
             <div className='space-y-3 border-t border-slate-800/70 px-3 pb-3 pt-3 sm:px-4 sm:pb-4'>
@@ -759,7 +786,6 @@ export default function ChatWindow() {
                     <IconDoorExit className='h-4 w-4' />
                     {isLeaving ? 'Leaving...' : 'Leave'}
                   </button>
-
                 </div>
               </div>
             </div>
@@ -767,7 +793,10 @@ export default function ChatWindow() {
         </div>
       </header>
 
-      <div ref={scrollContainerRef} className='flex-1 space-y-4 overflow-y-auto pr-2'>
+      <div
+        ref={scrollContainerRef}
+        className='flex-1 space-y-4 overflow-y-auto pr-2'
+      >
         {isRoomLoading && (
           <div className='rounded-2xl border border-slate-800/70 bg-slate-950/50 px-4 py-3 text-sm text-slate-400'>
             Loading room details...

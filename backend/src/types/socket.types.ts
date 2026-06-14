@@ -11,12 +11,6 @@ export interface ServerToClientEvents {
   /** For users IN a room */
   memberJoined: (roomId: string, userId: string) => void;
   memberLeft: (roomId: string, userId: string) => void;
-  memberKicked: (
-    roomId: string,
-    userId: string,
-    kickedBy: string,
-    reason: string,
-  ) => void;
 
   newMessage: (roomId: string, userId: string, message: IMessage) => void;
 }

@@ -74,5 +74,4 @@ export function handleSocketDisconnection(socket: ChatGyanSocket) {
   // Also remove any room-specific events that might still be active
   socket.off('memberJoined');
   socket.off('memberLeft');
-  socket.off('memberKicked');
 }

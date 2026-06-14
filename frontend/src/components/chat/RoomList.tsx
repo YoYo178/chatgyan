@@ -1,15 +1,20 @@
 import CreateRoomModal from '@/components/chat/CreateRoomModal';
+import JoinRoomModal from '@/components/chat/JoinRoomModal';
 import { useGetRoomsQuery } from '@/api/hooks/rooms/useGetRoomsQuery';
 import { useRoomsStore } from '@/hooks/state/useRoomsStore';
 import { socket } from '@/api/socket';
-import { IconPlus, IconSearch } from '@tabler/icons-react';
+import { IconPlus, IconSearch, IconHash } from '@tabler/icons-react';
 import { useState, useMemo, useEffect } from 'react';
 import { queryOptions, useQueryClient } from '@tanstack/react-query';
-import { startListeningRoomEvents, stopListeningRoomEvents } from '@/api/socket/room.sockets';
+import {
+  startListeningRoomEvents,
+  stopListeningRoomEvents,
+} from '@/api/socket/room.sockets';
 
 export default function RoomList() {
   const queryClient = useQueryClient();
   const [isCreateRoomOpen, setIsCreateRoomOpen] = useState(false);
+  const [isJoinByCodeOpen, setIsJoinByCodeOpen] = useState(false);
   const { data, isLoading, error } = useGetRoomsQuery({ queryKey: ['rooms'] });
   const rooms = useMemo(() => data?.data?.rooms ?? [], [data]);
   const [search, setSearch] = useState('');
@@ -29,14 +34,13 @@ export default function RoomList() {
         socket.emit('leaveRoom', joinedRoomId, ({ success }) => {
           if (success) {
             setJoinedRoomId(null);
-            // Clean up room events for the old room
             stopListeningRoomEvents(socket);
 
             queryClient.invalidateQueries({
-              ...queryOptions({ queryKey: ['rooms'] })
+              ...queryOptions({ queryKey: ['rooms'] }),
             });
             queryClient.invalidateQueries({
-              ...queryOptions({ queryKey: ['users', 'me'] })
+              ...queryOptions({ queryKey: ['users', 'me'] }),
             });
           }
           resolve();
@@ -44,17 +48,16 @@ export default function RoomList() {
       });
     }
 
-    // Now join the requested room
     socket.emit(
       'joinRoom',
       { method: 'id', data: roomId },
       ({ success, data }) => {
         if (success && data?.roomId) {
           queryClient.invalidateQueries({
-            ...queryOptions({ queryKey: ['rooms'] })
+            ...queryOptions({ queryKey: ['rooms'] }),
           });
           queryClient.invalidateQueries({
-            ...queryOptions({ queryKey: ['users', 'me'] })
+            ...queryOptions({ queryKey: ['users', 'me'] }),
           });
           startListeningRoomEvents(socket, queryClient);
 
@@ -94,10 +97,20 @@ export default function RoomList() {
             Your spaces
           </h2>
         </div>
+      </div>
+      <div className='w-full flex items-center gap-2'>
+        <button
+          type='button'
+          onClick={() => setIsJoinByCodeOpen(true)}
+          className='basis-1/2 inline-flex justify-center items-center gap-2 rounded-full bg-slate-800/80 px-3 py-2 text-xs font-semibold text-slate-300 transition hover:bg-slate-700/80 hover:text-slate-100'
+        >
+          <IconHash className='h-4 w-4' />
+          Join
+        </button>
         <button
           type='button'
           onClick={() => setIsCreateRoomOpen(true)}
-          className='inline-flex items-center gap-2 rounded-full bg-emerald-400/15 px-3 py-2 text-xs font-semibold text-emerald-200 transition hover:bg-emerald-400/30'
+          className='basis-1/2 inline-flex justify-center items-center gap-2 rounded-full bg-emerald-400/15 px-3 py-2 text-xs font-semibold text-emerald-200 transition hover:bg-emerald-400/30'
         >
           <IconPlus className='h-4 w-4' />
           Create
@@ -137,6 +150,7 @@ export default function RoomList() {
           !error &&
           filteredRooms.map((room) => {
             const isActive = selectedRoomId === room._id;
+            const isPrivate = room.visibility === 'private';
 
             return (
               <button
@@ -144,31 +158,45 @@ export default function RoomList() {
                 type='button'
                 onClick={() => handleSelectRoom(room._id)}
                 onDoubleClick={() => handleJoinRoom(room._id)}
-                className={`flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left text-sm transition ${isActive
-                  ? 'border-emerald-400/50 bg-emerald-400/10 text-slate-100'
-                  : 'border-slate-800/80 bg-slate-900/60 text-slate-300 hover:border-slate-700'
-                  }`}
+                className={`flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left text-sm transition ${
+                  isActive
+                    ? 'border-emerald-400/50 bg-emerald-400/10 text-slate-100'
+                    : 'border-slate-800/80 bg-slate-900/60 text-slate-300 hover:border-slate-700'
+                }`}
               >
                 <div className='w-full flex flex-col gap-1'>
                   <div className='w-full flex gap-2 justify-between'>
-                    <p className='font-semibold text-slate-100'>{room.name}</p>
-                    {room.isSystemGenerated ? (
-                      <span className='bg-emerald-400/10 text-emerald-200 px-2.5 py-0.5 rounded-full text-xs w-fit h-fit'>
-                        System
-                      </span>
-                    ) : (
-                      <>
+                    <p
+                      className='font-semibold text-slate-100 min-w-0 truncate'
+                      title={room.name}
+                    >
+                      {room.name}
+                    </p>
+                    <div className='flex items-center gap-1.5 shrink-0 ml-auto pl-1'>
+                      {isPrivate && (
+                        <span className='bg-slate-700/60 text-slate-300 px-2.5 py-0.5 rounded-full text-xs w-fit h-fit'>
+                          Private
+                        </span>
+                      )}
+                      {room.isSystemGenerated ? (
+                        <span className='bg-emerald-400/10 text-emerald-200 px-2.5 py-0.5 rounded-full text-xs w-fit h-fit'>
+                          System
+                        </span>
+                      ) : (
                         <span className='bg-emerald-400/10 text-emerald-200 px-2.5 py-0.5 rounded-full text-xs w-fit h-fit'>
                           {room.type?.length
                             ? room?.type?.at(0)?.toUpperCase() +
-                            room.type?.slice(1)
+                              room.type?.slice(1)
                             : ''}{' '}
                         </span>
-                      </>
-                    )}
+                      )}
+                    </div>
                   </div>
 
-                  <p className='text-xs font-medium text-slate-400'>
+                  <p
+                    className='text-xs font-medium text-slate-400'
+                    title={room.typeName}
+                  >
                     {room.typeName}
                   </p>
                   <p className='text-xs text-slate-500'>
@@ -184,6 +212,11 @@ export default function RoomList() {
       <CreateRoomModal
         open={isCreateRoomOpen}
         onOpenChange={setIsCreateRoomOpen}
+      />
+
+      <JoinRoomModal
+        open={isJoinByCodeOpen}
+        onOpenChange={setIsJoinByCodeOpen}
       />
     </aside>
   );

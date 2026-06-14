@@ -42,15 +42,6 @@ export const leaveRoomSchema = z.object({
 
 export type TLeaveRoomBody = z.infer<typeof leaveRoomSchema>;
 
-export const kickFromRoomSchema = z.object({
-  roomId: mongooseObjectId,
-  userId: mongooseObjectId,
-  kickedBy: mongooseObjectId,
-  reason: z.string().optional(),
-});
-
-export type TKickFromRoomPayload = z.infer<typeof kickFromRoomSchema>;
-
 export const updateRoomSchema = z.object({
   roomId: mongooseObjectId,
   name: z.string().min(1).max(100),
