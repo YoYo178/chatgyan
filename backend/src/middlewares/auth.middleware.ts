@@ -1,4 +1,4 @@
-import * as cookie from 'cookie';
+import { parseCookie } from 'cookie';
 import type { NextFunction, Request, Response } from 'express';
 import type { ExtendedError } from 'socket.io';
 
@@ -125,7 +125,7 @@ export const requireSocketAuth = async (socket: ChatGyanSocket, next: (err?: Ext
   const rawCookie = socket.handshake.headers.cookie;
   if (!rawCookie) return next(new Error('Unauthorized'));
 
-  const cookies = cookie.parse(rawCookie);
+  const cookies = parseCookie(rawCookie);
   const { accessToken, refreshToken } = cookies;
 
   const authDetails = await verifyAuth(refreshToken, accessToken);

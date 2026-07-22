@@ -37,7 +37,7 @@ export const login = async (req: Request, res: Response) => {
         maxAge: tokenConfig.refreshToken.expiry,
     });
 
-    // the pain to exclude a SINGLE field from an object while keeping both typescript and eslint happy...
+    // the pain to exclude a SINGLE field from an object while keeping both typescript and oxlint happy...
     res.status(HTTP_STATUS_CODES.Ok).json(
         {
             success: true,
