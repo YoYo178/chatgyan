@@ -23,10 +23,8 @@ export const getRoomById = async (req: Request, res: Response) => {
 
   if (!room) throw new APIError('Room not found', HTTP_STATUS_CODES.NotFound);
 
-  res
-    .status(HTTP_STATUS_CODES.Ok)
-    .json({
-      success: true,
-      data: { room: sanitizeRoomObj(room, req.user.id) },
-    });
+  res.status(HTTP_STATUS_CODES.Ok).json({
+    success: true,
+    data: { room: sanitizeRoomObj(room, req.user.id) },
+  });
 };

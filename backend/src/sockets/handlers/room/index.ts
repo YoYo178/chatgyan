@@ -1,7 +1,4 @@
-import type {
-  ChatGyanSocket,
-  ChatGyanSocketServer,
-} from '@src/types/socket.types.js';
+import type { ChatGyanSocket, ChatGyanSocketServer } from '@src/types/socket.types.js';
 
 import { getCreateRoomEventCallback } from './createRoom.js';
 import { getDeleteRoomEventCallback } from './deleteRoom.js';
@@ -9,10 +6,7 @@ import { getJoinRoomEventCallback } from './joinRoom.js';
 import { getLeaveRoomEventCallback } from './leaveRoom.js';
 import { getUpdateRoomEventCallback } from './updateRoom.js';
 
-export function registerRoomHandlers(
-  io: ChatGyanSocketServer,
-  socket: ChatGyanSocket,
-) {
+export function registerRoomHandlers(io: ChatGyanSocketServer, socket: ChatGyanSocket) {
   socket.on('createRoom', getCreateRoomEventCallback(io, socket));
   socket.on('joinRoom', getJoinRoomEventCallback(io, socket));
   socket.on('leaveRoom', getLeaveRoomEventCallback(io, socket));

@@ -1,11 +1,7 @@
 import ENV from '@src/common/env.js';
 import type { CorsOptions } from 'cors';
 
-const allowedOrigins = [
-  'http://localhost:5173',
-  'https://yoyo178.github.io',
-  ENV.FRONTEND_ORIGIN,
-];
+const allowedOrigins = ['http://localhost:5173', 'https://yoyo178.github.io', ENV.FRONTEND_ORIGIN];
 
 export const CORSConfig: CorsOptions = {
   origin: (

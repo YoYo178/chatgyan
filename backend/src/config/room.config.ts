@@ -1,10 +1,6 @@
 import type { IRoom } from '@src/types/room.types.js';
 
-
-export const DEFAULT_SYSTEM_ROOM_CONFIG: Omit<
-  IRoom,
-  '_id' | 'createdAt' | 'updatedAt'
-> = {
+export const DEFAULT_SYSTEM_ROOM_CONFIG: Omit<IRoom, '_id' | 'createdAt' | 'updatedAt'> = {
   code: '',
   isSystemGenerated: true,
   memberLimit: 10,

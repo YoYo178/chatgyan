@@ -1,9 +1,16 @@
 import { leaveRoom } from '@src/services/room.service.js';
-import type { ClientToServerEvents, ChatGyanSocket, ChatGyanSocketServer } from '@src/types/socket.types.js';
+import type {
+  ClientToServerEvents,
+  ChatGyanSocket,
+  ChatGyanSocketServer,
+} from '@src/types/socket.types.js';
 import logger from '@src/utils/logger.utils.js';
 import mongoose from 'mongoose';
 
-export const getLeaveRoomEventCallback = (_: ChatGyanSocketServer, socket: ChatGyanSocket): ClientToServerEvents['leaveRoom'] => {
+export const getLeaveRoomEventCallback = (
+  _: ChatGyanSocketServer,
+  socket: ChatGyanSocket,
+): ClientToServerEvents['leaveRoom'] => {
   return async (roomId, ack) => {
     if (!socket.data?.user) {
       logger.warn('Unauthenticated user attempted to leave room');
@@ -11,8 +18,7 @@ export const getLeaveRoomEventCallback = (_: ChatGyanSocketServer, socket: ChatG
     }
 
     try {
-      if (!mongoose.isValidObjectId(roomId))
-        throw new Error('Invalid room ID');
+      if (!mongoose.isValidObjectId(roomId)) throw new Error('Invalid room ID');
 
       const userId = socket.data.user.id;
 

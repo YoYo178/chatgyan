@@ -10,7 +10,8 @@ import { loginSchema, signupSchema } from '@src/schemas/auth.schemas.js';
 import { login, logout, signup } from '@src/controllers/auth.controller.js';
 
 // Helper function to add rate limits
-const limit = (options?: Partial<Options>) => rateLimit({ ...DEFAULT_RATE_LIMIT_OPTIONS, ...options });
+const limit = (options?: Partial<Options>) =>
+  rateLimit({ ...DEFAULT_RATE_LIMIT_OPTIONS, ...options });
 
 const AuthRouter: Router = Router();
 

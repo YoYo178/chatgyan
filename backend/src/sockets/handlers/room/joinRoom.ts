@@ -1,8 +1,4 @@
-import {
-  getRoom,
-  getRoomByCode,
-  joinRoom,
-} from '@src/services/room.service.js';
+import { getRoom, getRoomByCode, joinRoom } from '@src/services/room.service.js';
 import type {
   ClientToServerEvents,
   ChatGyanSocket,
@@ -55,11 +51,7 @@ export const getJoinRoomEventCallback = (
 
       if (!room) throw new Error('Room ID not found');
 
-      if (
-        room.visibility === 'private' &&
-        method === 'id' &&
-        userId !== room.owner?.toString()
-      )
+      if (room.visibility === 'private' && method === 'id' && userId !== room.owner?.toString())
         throw new Error('The room you are trying to join is private.');
 
       if (room.memberCount >= room.memberLimit)
@@ -70,14 +62,11 @@ export const getJoinRoomEventCallback = (
 
       // Join the specified room for the client
       socket.join(roomId);
-      logger.info(
-        `${socket.data.user.username} joined room ${roomId} via method '${method}'`,
-        {
-          userId: socket.data.user.id,
-          roomId,
-          method,
-        },
-      );
+      logger.info(`${socket.data.user.username} joined room ${roomId} via method '${method}'`, {
+        userId: socket.data.user.id,
+        roomId,
+        method,
+      });
 
       // Broadcast the member join event to everyone in this room (except the joiner)
       socket.to(roomId).emit('memberJoined', roomId, userId);

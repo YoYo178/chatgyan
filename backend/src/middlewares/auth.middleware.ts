@@ -10,118 +10,144 @@ import { User } from '@src/models/user.model.js';
 import type { TVerifyAuthReturn } from '@src/types/jwt.types.js';
 import type { ChatGyanSocket } from '@src/types/socket.types.js';
 import { APIError } from '@src/utils/api.utils.js';
-import { generateAccessToken, verifyAccessToken, verifyRefreshToken } from '@src/utils/jwt.utils.js';
+import {
+  generateAccessToken,
+  verifyAccessToken,
+  verifyRefreshToken,
+} from '@src/utils/jwt.utils.js';
 
-const verifyAuth = async (refreshToken?: string, accessToken?: string): Promise<TVerifyAuthReturn> => {
-    const returnObj: TVerifyAuthReturn = { success: false, isMaliciousUser: false, data: { user: null } };
+const verifyAuth = async (
+  refreshToken?: string,
+  accessToken?: string,
+): Promise<TVerifyAuthReturn> => {
+  const returnObj: TVerifyAuthReturn = {
+    success: false,
+    isMaliciousUser: false,
+    data: { user: null },
+  };
 
-    // Verify refresh token
-    const decodedRefreshToken = verifyRefreshToken(refreshToken ?? '');
+  // Verify refresh token
+  const decodedRefreshToken = verifyRefreshToken(refreshToken ?? '');
 
-    // Invalid refresh token, prompt the user to log in again
-    if (!decodedRefreshToken.valid) {
-        returnObj.error = {
-            message: 'Invalid token, please log in again.',
-            code: HTTP_STATUS_CODES.Unauthorized,
-        };
-        return returnObj;
-    }
-
-    // Expired refresh token, prompt the user to log in again
-    if (decodedRefreshToken.expired) {
-        returnObj.error = {
-            message: 'Token expired, please log in again.',
-            code: HTTP_STATUS_CODES.Unauthorized,
-        };
-        return returnObj;
-    }
-
-    // Verify access token
-    const decodedAccessToken = verifyAccessToken(accessToken);
-
-    // (This is a slightly hackish workaround!)
-    // The token verification result will return isBlank as true if the token was, well.. blank (lol)
-    //   The reason we need to check for blank tokens as well is because
-    //   while tokens do expire, the 'maxAge' attribute also auto-deletes the tokens
-    //   so we won't receive a token at all instead of receiving an 'expired token'
-    if (!decodedAccessToken.isBlank) {
-        // Invalid access token, prompt the user to log in again even if the refresh token is valid
-        // as this can be a sign of maliciousness
-        if (!decodedAccessToken.valid) {
-            returnObj.error = {
-                message: 'Invalid token, please log in again.',
-                code: HTTP_STATUS_CODES.Unauthorized,
-            };
-            return returnObj;
-        }
-
-        // Access token and Refresh token mismatch, malicious user spotted
-        // Add the user to blacklist
-        const isMaliciousUser = decodedRefreshToken.data.user.id !== decodedAccessToken.data.user.id;
-        if (isMaliciousUser) {
-            returnObj.isMaliciousUser = true;
-            return returnObj;
-        }
-    }
-
-    // Fetch the user via ID from database, and exclude password because we ain't need any of that
-    const user = await User.findById(decodedRefreshToken.data.user.id).select('-passwordHash').lean().exec();
-
-    // User not found, maybe user deleted their account but the tokens are still stored?
-    if (!user) {
-        returnObj.error = {
-            message: 'User not found!',
-            code: HTTP_STATUS_CODES.NotFound,
-        };
-        return returnObj;
-    }
-
-    // Silent access token refresh (yes checking this late is intentional)
-    if (decodedAccessToken.expired || decodedAccessToken.isBlank)
-        returnObj.data.accessToken = generateAccessToken({ user: { id: user._id.toString(), email: user.email, username: user.username } });
-
-    // Update object state and finally return, as shrimple as that
-    returnObj.success = true;
-    returnObj.data.user = user;
-
+  // Invalid refresh token, prompt the user to log in again
+  if (!decodedRefreshToken.valid) {
+    returnObj.error = {
+      message: 'Invalid token, please log in again.',
+      code: HTTP_STATUS_CODES.Unauthorized,
+    };
     return returnObj;
+  }
+
+  // Expired refresh token, prompt the user to log in again
+  if (decodedRefreshToken.expired) {
+    returnObj.error = {
+      message: 'Token expired, please log in again.',
+      code: HTTP_STATUS_CODES.Unauthorized,
+    };
+    return returnObj;
+  }
+
+  // Verify access token
+  const decodedAccessToken = verifyAccessToken(accessToken);
+
+  // (This is a slightly hackish workaround!)
+  // The token verification result will return isBlank as true if the token was, well.. blank (lol)
+  //   The reason we need to check for blank tokens as well is because
+  //   while tokens do expire, the 'maxAge' attribute also auto-deletes the tokens
+  //   so we won't receive a token at all instead of receiving an 'expired token'
+  if (!decodedAccessToken.isBlank) {
+    // Invalid access token, prompt the user to log in again even if the refresh token is valid
+    // as this can be a sign of maliciousness
+    if (!decodedAccessToken.valid) {
+      returnObj.error = {
+        message: 'Invalid token, please log in again.',
+        code: HTTP_STATUS_CODES.Unauthorized,
+      };
+      return returnObj;
+    }
+
+    // Access token and Refresh token mismatch, malicious user spotted
+    // Add the user to blacklist
+    const isMaliciousUser = decodedRefreshToken.data.user.id !== decodedAccessToken.data.user.id;
+    if (isMaliciousUser) {
+      returnObj.isMaliciousUser = true;
+      return returnObj;
+    }
+  }
+
+  // Fetch the user via ID from database, and exclude password because we ain't need any of that
+  const user = await User.findById(decodedRefreshToken.data.user.id)
+    .select('-passwordHash')
+    .lean()
+    .exec();
+
+  // User not found, maybe user deleted their account but the tokens are still stored?
+  if (!user) {
+    returnObj.error = {
+      message: 'User not found!',
+      code: HTTP_STATUS_CODES.NotFound,
+    };
+    return returnObj;
+  }
+
+  // Silent access token refresh (yes checking this late is intentional)
+  if (decodedAccessToken.expired || decodedAccessToken.isBlank)
+    returnObj.data.accessToken = generateAccessToken({
+      user: { id: user._id.toString(), email: user.email, username: user.username },
+    });
+
+  // Update object state and finally return, as shrimple as that
+  returnObj.success = true;
+  returnObj.data.user = user;
+
+  return returnObj;
 };
 
 export const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
-    const { accessToken, refreshToken }: { accessToken?: string, refreshToken?: string } = req.cookies;
+  const { accessToken, refreshToken }: { accessToken?: string; refreshToken?: string } =
+    req.cookies;
 
-    const authDetails = await verifyAuth(refreshToken, accessToken);
+  const authDetails = await verifyAuth(refreshToken, accessToken);
 
-    if (!authDetails.success && authDetails.error) {
-        res.status(authDetails.error.code).json({ success: false, message: authDetails.error.message });
-        return;
-    }
+  if (!authDetails.success && authDetails.error) {
+    res.status(authDetails.error.code).json({ success: false, message: authDetails.error.message });
+    return;
+  }
 
-    // TODO: Blacklist by IP
-    if (authDetails.isMaliciousUser)
-        throw new APIError('Malicious activity detected, you have been added to the blacklist.', HTTP_STATUS_CODES.Forbidden);
+  // TODO: Blacklist by IP
+  if (authDetails.isMaliciousUser)
+    throw new APIError(
+      'Malicious activity detected, you have been added to the blacklist.',
+      HTTP_STATUS_CODES.Forbidden,
+    );
 
-    // Handle silent access token refresh
-    if (authDetails.data.accessToken)
-        res.cookie('accessToken', authDetails.data.accessToken, { ...cookieConfig, maxAge: tokenConfig.accessToken.expiry });
+  // Handle silent access token refresh
+  if (authDetails.data.accessToken)
+    res.cookie('accessToken', authDetails.data.accessToken, {
+      ...cookieConfig,
+      maxAge: tokenConfig.accessToken.expiry,
+    });
 
-    if (authDetails.data.user) {
-        const user = authDetails.data.user;
+  if (authDetails.data.user) {
+    const user = authDetails.data.user;
 
-        req.user = {
-            id: user._id.toString(),
-            email: user.email,
-            username: user.username,
-        };
+    req.user = {
+      id: user._id.toString(),
+      email: user.email,
+      username: user.username,
+    };
 
-        next();
-        return;
-    }
+    next();
+    return;
+  }
 
-    throw new APIError('Authentication failed', HTTP_STATUS_CODES.InternalServerError);
+  throw new APIError('Authentication failed', HTTP_STATUS_CODES.InternalServerError);
 };
 
-export const requireSocketAuth = async (socket: ChatGyanSocket, next: (err?: ExtendedError) => void) => {
+export const requireSocketAuth = async (
+  socket: ChatGyanSocket,
+  next: (err?: ExtendedError) => void,
+) => {
   const rawCookie = socket.handshake.headers.cookie;
   if (!rawCookie) return next(new Error('Unauthorized'));
 

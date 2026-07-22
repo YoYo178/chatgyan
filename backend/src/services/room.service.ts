@@ -34,11 +34,7 @@ export async function deleteRoom(roomId: string) {
   return Room.findByIdAndDelete(roomId).lean().exec();
 }
 
-export async function addUserToRoom(
-  roomId: string,
-  userId: string,
-  isAdmin?: boolean,
-) {
+export async function addUserToRoom(roomId: string, userId: string, isAdmin?: boolean) {
   return Room.findByIdAndUpdate(
     roomId,
     {
@@ -63,10 +59,7 @@ export async function removeUserFromRoom(roomId: string, userId: string) {
   ).exec();
 }
 
-export async function isUserInRoom(
-  roomId: string,
-  userId: string,
-): Promise<boolean> {
+export async function isUserInRoom(roomId: string, userId: string): Promise<boolean> {
   const room = await Room.findOne({ _id: roomId, 'members.user': userId })
     .select('_id')
     .lean()
@@ -74,22 +67,12 @@ export async function isUserInRoom(
   return !!room;
 }
 
-export async function isUserRoomOwner(
-  userId: string,
-  roomId: string,
-): Promise<boolean> {
-  const room = await Room.findOne({ _id: roomId, owner: userId })
-    .select('_id')
-    .lean()
-    .exec();
+export async function isUserRoomOwner(userId: string, roomId: string): Promise<boolean> {
+  const room = await Room.findOne({ _id: roomId, owner: userId }).select('_id').lean().exec();
   return !!room;
 }
 
-export async function joinRoom(
-  userId: string,
-  roomId: string,
-  isAdmin?: boolean,
-) {
+export async function joinRoom(userId: string, roomId: string, isAdmin?: boolean) {
   const session = await mongoose.startSession();
 
   try {
@@ -131,8 +114,7 @@ export async function leaveRoom(userId: string, roomId: string) {
       let user = await getUser(userId);
       if (!user) throw new Error('User not found');
 
-      if (!user.room?.toString() || user.room?.toString() != roomId)
-        return null;
+      if (!user.room?.toString() || user.room?.toString() != roomId) return null;
 
       let room = await getRoom(roomId);
       if (!room) throw new Error('Room not found');

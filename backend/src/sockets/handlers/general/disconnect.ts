@@ -1,15 +1,9 @@
 import { leaveRoom } from '@src/services/room.service.js';
 import { getUser } from '@src/services/user.service.js';
-import type {
-  ChatGyanSocket,
-  ChatGyanSocketServer,
-} from '@src/types/socket.types.js';
+import type { ChatGyanSocket, ChatGyanSocketServer } from '@src/types/socket.types.js';
 import logger from '@src/utils/logger.utils.js';
 
-export const getDisconnectEventCallback = (
-  _io: ChatGyanSocketServer,
-  socket: ChatGyanSocket,
-) => {
+export const getDisconnectEventCallback = (_io: ChatGyanSocketServer, socket: ChatGyanSocket) => {
   return async (reason: string, description: string) => {
     if (!socket.data?.user) {
       logger.warn('Unauthenticated user disconnected', { reason, description });

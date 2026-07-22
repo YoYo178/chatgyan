@@ -8,10 +8,6 @@ import { getAllRooms, getRoomById } from '@src/controllers/rooms.controller.js';
 const RoomsRouter: Router = Router();
 
 RoomsRouter.get('/', getAllRooms);
-RoomsRouter.get(
-  '/:roomId',
-  validate({ params: roomIdParamsSchema }),
-  getRoomById,
-);
+RoomsRouter.get('/:roomId', validate({ params: roomIdParamsSchema }), getRoomById);
 
 export default RoomsRouter;

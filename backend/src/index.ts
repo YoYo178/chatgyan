@@ -1,8 +1,4 @@
-import express, {
-  type NextFunction,
-  type Request,
-  type Response,
-} from 'express';
+import express, { type NextFunction, type Request, type Response } from 'express';
 import http from 'http';
 import path from 'path';
 

@@ -34,12 +34,7 @@ export const getSendMessageEventCallback = (
       });
 
       // Broadcast message to everyone in the room (including sender for confirmation)
-      io.to(roomId).emit(
-        'newMessage',
-        roomId,
-        socket.data.user.id,
-        message.toObject(),
-      );
+      io.to(roomId).emit('newMessage', roomId, socket.data.user.id, message.toObject());
 
       ack({ success: true });
     } catch (err) {

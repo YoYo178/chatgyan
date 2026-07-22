@@ -21,9 +21,7 @@ export const populateRoomData = async () => {
     if (rooms.find((room) => room.code === roomCode)) continue;
 
     const roomName =
-      availableRoomNames[
-        Math.floor(Math.random() * availableRoomNames.length)
-      ] || 'General Room';
+      availableRoomNames[Math.floor(Math.random() * availableRoomNames.length)] || 'General Room';
 
     availableRoomNames.splice(availableRoomNames.indexOf(roomName), 1);
 
@@ -50,13 +48,8 @@ export function generateRoomCode(length: number): string {
   return result;
 }
 
-export function sanitizeRoomObj(
-  room: IRoom,
-  userID: string,
-): IRoom | IRoomPublicView {
-  const isUserInRoom = room.members.some(
-    (mem) => mem.user.toString() === userID,
-  );
+export function sanitizeRoomObj(room: IRoom, userID: string): IRoom | IRoomPublicView {
+  const isUserInRoom = room.members.some((mem) => mem.user.toString() === userID);
 
   if (!isUserInRoom)
     return {

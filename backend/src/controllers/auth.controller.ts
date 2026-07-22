@@ -12,101 +12,106 @@ import { APIError } from '@src/utils/api.utils.js';
 import { generateAccessToken, generateRefreshToken } from '@src/utils/jwt.utils.js';
 
 export const login = async (req: Request, res: Response) => {
-    const { email, password } = req.body as TLoginBody;
+  const { email, password } = req.body as TLoginBody;
 
-    const user = await User.findOne({ email }).lean().exec();
+  const user = await User.findOne({ email }).lean().exec();
 
-    if (!user)
-        throw new APIError('No user exists with the specified email.', HTTP_STATUS_CODES.NotFound);
+  if (!user)
+    throw new APIError('No user exists with the specified email.', HTTP_STATUS_CODES.NotFound);
 
-    const passwordMatches = await argon2.verify(user.passwordHash, password);
+  const passwordMatches = await argon2.verify(user.passwordHash, password);
 
-    if (!passwordMatches)
-        throw new APIError('Invalid password', HTTP_STATUS_CODES.BadRequest);
+  if (!passwordMatches) throw new APIError('Invalid password', HTTP_STATUS_CODES.BadRequest);
 
-    const refreshToken = generateRefreshToken({ user: { id: user._id.toString(), email: user.email } });
-    const accessToken = generateAccessToken({ user: { id: user._id.toString(), email: user.email, username: user.username } });
+  const refreshToken = generateRefreshToken({
+    user: { id: user._id.toString(), email: user.email },
+  });
+  const accessToken = generateAccessToken({
+    user: { id: user._id.toString(), email: user.email, username: user.username },
+  });
 
-    res.cookie('accessToken', accessToken, {
-        ...cookieConfig,
-        maxAge: tokenConfig.accessToken.expiry,
-    });
+  res.cookie('accessToken', accessToken, {
+    ...cookieConfig,
+    maxAge: tokenConfig.accessToken.expiry,
+  });
 
-    res.cookie('refreshToken', refreshToken, {
-        ...cookieConfig,
-        maxAge: tokenConfig.refreshToken.expiry,
-    });
+  res.cookie('refreshToken', refreshToken, {
+    ...cookieConfig,
+    maxAge: tokenConfig.refreshToken.expiry,
+  });
 
-    // the pain to exclude a SINGLE field from an object while keeping both typescript and oxlint happy...
-    res.status(HTTP_STATUS_CODES.Ok).json(
-        {
-            success: true,
-            message: 'Logged in successfully!',
-            data: {
-                user: {
-                    _id: user._id.toString(),
-                    fullName: user.fullName,
-                    username: user.username,
-                    email: user.email,
-                    avatarURL: user.avatarURL,
-                    room: user.room,
-                    createdAt: user.createdAt,
-                    updatedAt: user.updatedAt,
-                },
-            },
-        },
-    );
+  // the pain to exclude a SINGLE field from an object while keeping both typescript and oxlint happy...
+  res.status(HTTP_STATUS_CODES.Ok).json({
+    success: true,
+    message: 'Logged in successfully!',
+    data: {
+      user: {
+        _id: user._id.toString(),
+        fullName: user.fullName,
+        username: user.username,
+        email: user.email,
+        avatarURL: user.avatarURL,
+        room: user.room,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
+    },
+  });
 };
 
 export const logout = (_: Request, res: Response) => {
-    res.clearCookie('accessToken', {
-        ...cookieConfig,
-        maxAge: tokenConfig.accessToken.expiry,
-    });
+  res.clearCookie('accessToken', {
+    ...cookieConfig,
+    maxAge: tokenConfig.accessToken.expiry,
+  });
 
-    res.clearCookie('refreshToken', {
-        ...cookieConfig,
-        maxAge: tokenConfig.refreshToken.expiry,
-    });
+  res.clearCookie('refreshToken', {
+    ...cookieConfig,
+    maxAge: tokenConfig.refreshToken.expiry,
+  });
 
-    res.status(HTTP_STATUS_CODES.Ok).json({ success: true, message: 'Logged out successfully!' });
+  res.status(HTTP_STATUS_CODES.Ok).json({ success: true, message: 'Logged out successfully!' });
 };
 
 export const signup = async (req: Request, res: Response) => {
-    const { username, fullName, email, password } = req.body as TSignUpBody;
+  const { username, fullName, email, password } = req.body as TSignUpBody;
 
-    const hashedPassword = await argon2.hash(password);
+  const hashedPassword = await argon2.hash(password);
 
-    const emailExists = !!await getUserByEmail(email);
+  const emailExists = !!(await getUserByEmail(email));
 
-    if (emailExists)
-        throw new APIError('An account already exists with this email!', HTTP_STATUS_CODES.Conflict);
+  if (emailExists)
+    throw new APIError('An account already exists with this email!', HTTP_STATUS_CODES.Conflict);
 
-    const usernameExists = !!await User.findOne({ username }).select('-passwordHash').lean().exec();
+  const usernameExists = !!(await User.findOne({ username }).select('-passwordHash').lean().exec());
 
-    if (usernameExists)
-        throw new APIError('This username is already taken, try another.', HTTP_STATUS_CODES.Conflict);
+  if (usernameExists)
+    throw new APIError('This username is already taken, try another.', HTTP_STATUS_CODES.Conflict);
 
-    const user = await createUser({ username, fullName, email, passwordHash: hashedPassword });
+  const user = await createUser({ username, fullName, email, passwordHash: hashedPassword });
 
-    const { passwordHash: _passwordHash, ...rest } = user;
+  const { passwordHash: _passwordHash, ...rest } = user;
 
-    const refreshToken = generateRefreshToken({ user: { id: user._id.toString(), email: user.email } });
-    const accessToken = generateAccessToken({ user: { id: user._id.toString(), email: user.email, username: user.username } });
+  const refreshToken = generateRefreshToken({
+    user: { id: user._id.toString(), email: user.email },
+  });
+  const accessToken = generateAccessToken({
+    user: { id: user._id.toString(), email: user.email, username: user.username },
+  });
 
-    res.cookie('accessToken', accessToken, {
-        ...cookieConfig,
-        maxAge: tokenConfig.accessToken.expiry,
-    });
+  res.cookie('accessToken', accessToken, {
+    ...cookieConfig,
+    maxAge: tokenConfig.accessToken.expiry,
+  });
 
-    res.cookie('refreshToken', refreshToken, {
-        ...cookieConfig,
-        maxAge: tokenConfig.refreshToken.expiry,
-    });
+  res.cookie('refreshToken', refreshToken, {
+    ...cookieConfig,
+    maxAge: tokenConfig.refreshToken.expiry,
+  });
 
-    res.status(HTTP_STATUS_CODES.Ok).json({
-        success: true,
-        message: 'User successfully registered',
-        data: { user: rest },
-    });
+  res.status(HTTP_STATUS_CODES.Ok).json({
+    success: true,
+    message: 'User successfully registered',
+    data: { user: rest },
+  });
 };

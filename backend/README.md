@@ -10,47 +10,47 @@ The backend serves as the core of the ChatGyan platform, exposing REST APIs and 
 
 ### Authentication & Authorization
 
-* User registration
-* User login
-* JWT authentication
-* Access tokens
-* Refresh tokens
-* Protected endpoints
-* Password hashing using bcrypt
+- User registration
+- User login
+- JWT authentication
+- Access tokens
+- Refresh tokens
+- Protected endpoints
+- Password hashing using bcrypt
 
 ### Room Management
 
-* Create rooms
-* Join rooms
-* Leave rooms
-* Public and private room support
-* Room ownership management
+- Create rooms
+- Join rooms
+- Leave rooms
+- Public and private room support
+- Room ownership management
 
 ### Real-Time Communication
 
-* Socket.io integration
-* Live messaging
-* User connection tracking
-* Room event broadcasting
+- Socket.io integration
+- Live messaging
+- User connection tracking
+- Room event broadcasting
 
 ### Database Operations
 
-* User management
-* Room management
-* Message persistence
-* Data validation
-* MongoDB integration
+- User management
+- Room management
+- Message persistence
+- Data validation
+- MongoDB integration
 
 ## Tech Stack
 
-* Node.js
-* Express.js
-* TypeScript
-* MongoDB
-* Mongoose
-* Socket.io
-* JWT
-* bcrypt
+- Node.js
+- Express.js
+- TypeScript
+- MongoDB
+- Mongoose
+- Socket.io
+- JWT
+- bcrypt
 
 ## API Architecture
 
@@ -77,8 +77,8 @@ MongoDB
 
 ### Prerequisites
 
-* Node.js v18+
-* MongoDB
+- Node.js v18+
+- MongoDB
 
 ### Setup
 
@@ -195,12 +195,12 @@ newMessage
 
 ## Security Measures
 
-* Password hashing with bcrypt
-* JWT authentication
-* Protected API routes
-* Input validation
-* Environment-based secrets
-* CORS configuration
+- Password hashing with bcrypt
+- JWT authentication
+- Protected API routes
+- Input validation
+- Environment-based secrets
+- CORS configuration
 
 ## Available Scripts
 
@@ -213,14 +213,14 @@ pnpm run lint
 
 ## Future Improvements
 
-* Redis caching
-* Horizontal scaling
-* File uploads
-* Push notifications
-* Message reactions
-* Direct messaging
-* Email verification
-* Typing indicators
+- Redis caching
+- Horizontal scaling
+- File uploads
+- Push notifications
+- Message reactions
+- Direct messaging
+- Email verification
+- Typing indicators
 
 ## License
 

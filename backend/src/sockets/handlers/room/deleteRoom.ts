@@ -1,10 +1,5 @@
 import { Message } from '@src/models/message.model.js';
-import {
-  deleteRoom,
-  leaveRoom,
-  isUserRoomOwner,
-  getRoom,
-} from '@src/services/room.service.js';
+import { deleteRoom, leaveRoom, isUserRoomOwner, getRoom } from '@src/services/room.service.js';
 import { getUser } from '@src/services/user.service.js';
 import type {
   ClientToServerEvents,
@@ -30,8 +25,7 @@ export const getDeleteRoomEventCallback = (
       const room = await getRoom(roomId);
       if (!room) throw new Error('Room not found');
 
-      if (room.isSystemGenerated)
-        throw new Error('System rooms cannot be deleted');
+      if (room.isSystemGenerated) throw new Error('System rooms cannot be deleted');
 
       const userId = socket.data.user.id;
       const user = await getUser(userId);
@@ -45,13 +39,10 @@ export const getDeleteRoomEventCallback = (
 
       // Leave the specified room for the client
       socket.leave(roomId);
-      logger.info(
-        `${socket.data.user.id} left room ${roomId} due to room deletion.`,
-        {
-          userId: socket.data.user.id,
-          roomId,
-        },
-      );
+      logger.info(`${socket.data.user.id} left room ${roomId} due to room deletion.`, {
+        userId: socket.data.user.id,
+        roomId,
+      });
 
       const memberCount = io.sockets.adapter.rooms.get(roomId)?.size ?? 0;
       logger.info(
@@ -63,9 +54,7 @@ export const getDeleteRoomEventCallback = (
       );
 
       // Leave room for everyone else
-      await Promise.all(
-        room.members.map((mem) => leaveRoom(mem.user.toString(), roomId)),
-      );
+      await Promise.all(room.members.map((mem) => leaveRoom(mem.user.toString(), roomId)));
 
       // Emit event before kicking clients
       io.emit('roomDeleted', roomId, user._id.toString());
