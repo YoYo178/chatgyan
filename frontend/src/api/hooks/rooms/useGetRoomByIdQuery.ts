@@ -4,7 +4,6 @@ import { APIEndpoints } from '../../endpoints';
 
 type GetRoomByIdResponse = { room: IRoomPublicView | IRoom };
 
-// eslint-disable-next-line react-hooks/rules-of-hooks
 export const useGetRoomByIdQuery = useQueryBase<GetRoomByIdResponse>(
   APIEndpoints.GET_ROOM_BY_ID,
   true,

@@ -32,7 +32,6 @@ export const useInfiniteQueryBase = <ResponseType>(
     if (pathParams) URL = injectPathParams(URL, pathParams);
     if (queryParams) URL = injectQueryParams(URL, queryParams);
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     return useInfiniteQuery({
       ...infiniteQueryOptions({
         queryKey: [...queryKey],

@@ -60,7 +60,7 @@ ChatGyan is a real-time communication platform designed to facilitate collaborat
 ### Development Tools
 
 - Git & GitHub
-- ESLint
+- Oxlint
 - Prettier
 
 ## System Architecture

@@ -13,7 +13,6 @@ export interface TSignupMutationResponse {
   };
 }
 
-// eslint-disable-next-line react-hooks/rules-of-hooks
 export const useSignupMutation = useMutationBase<
   TSignupMutationBody,
   TSignupMutationResponse

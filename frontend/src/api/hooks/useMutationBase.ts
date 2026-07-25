@@ -23,10 +23,8 @@ export const useMutationBase = <PayloadType, ResponseType>(
   },
 ) => {
   return ({ queryKey = [] }: { queryKey?: string[] }) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const queryClient = useQueryClient();
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     return useMutation({
       mutationFn: async ({
         payload,

@@ -32,7 +32,6 @@ export const useQueryBase = <ResponseType>(
     if (pathParams) URL = injectPathParams(URL, pathParams);
     if (queryParams) URL = injectQueryParams(URL, queryParams);
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     return useQuery({
       ...queryOptions({
         queryKey: [...queryKey, sendCookies],

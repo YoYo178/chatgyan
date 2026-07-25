@@ -12,7 +12,6 @@ export type TLoginMutationResponse = APIResponse<{
   user: IUser;
 }>;
 
-// eslint-disable-next-line react-hooks/rules-of-hooks
 export const useLoginMutation = useMutationBase<
   TLoginMutationBody,
   TLoginMutationResponse

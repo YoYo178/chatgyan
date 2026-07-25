@@ -13,7 +13,6 @@ export type TUpdateMeMutationResponse = APIResponse<{
   user: IUser;
 }>;
 
-// eslint-disable-next-line react-hooks/rules-of-hooks
 export const useUpdateMeMutation = useMutationBase<
   TUpdateMeMutationBody,
   TUpdateMeMutationResponse

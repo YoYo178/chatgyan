@@ -4,7 +4,6 @@ import type { IUser } from '@/types/user.types';
 
 type GetUserResponse = { user: IUser };
 
-// eslint-disable-next-line react-hooks/rules-of-hooks
 export const useGetUserQuery = useQueryBase<GetUserResponse>(
   APIEndpoints.GET_USER,
   true,
