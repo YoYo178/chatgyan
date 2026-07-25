@@ -1,11 +1,7 @@
 import { useLogoutMutation } from '@/api/hooks/auth/useLogoutMutation';
 import { useMe } from '@/api/hooks/users/useGetMeQuery';
 import ProfileModal from '@/components/chat/ProfileModal';
-import {
-  IconLogout,
-  IconSchool,
-  IconUserCircle,
-} from '@tabler/icons-react';
+import { IconLogout, IconSchool, IconUserCircle } from '@tabler/icons-react';
 import { queryOptions, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -31,9 +27,7 @@ export default function ChatNavbar() {
           <IconSchool className='h-6 w-6' />
         </div>
         <div className='chat-display-font'>
-          <p className='text-lg uppercase tracking-[0.24em] text-emerald-300/80'>
-            ChatGyan
-          </p>
+          <p className='text-lg uppercase tracking-[0.24em] text-emerald-300/80'>ChatGyan</p>
         </div>
       </div>
 
@@ -41,9 +35,7 @@ export default function ChatNavbar() {
         <div className='flex items-center gap-3 rounded-full border border-slate-800/80 bg-slate-900/60 px-3 py-2'>
           <div className='flex h-10 w-10 items-center justify-center rounded-full bg-emerald-400/15 text-emerald-200'>
             <span className='text-sm font-semibold'>
-              {me?.fullName
-                ? me.fullName.charAt(0) + me.fullName.split(' ')[1]?.charAt(0)
-                : '?'}
+              {me?.fullName ? me.fullName.charAt(0) + me.fullName.split(' ')[1]?.charAt(0) : '?'}
             </span>
           </div>
           <div className='hidden sm:block'>
@@ -51,7 +43,7 @@ export default function ChatNavbar() {
               {me?.fullName || 'Error fetching name'}
             </p>
             <p className='text-xs text-slate-400'>
-              {me?.course} · {me?.year !== "-" ? `Year ${me?.year}` : me?.year}
+              {me?.course} · {me?.year !== '-' ? `Year ${me?.year}` : me?.year}
             </p>
           </div>
         </div>

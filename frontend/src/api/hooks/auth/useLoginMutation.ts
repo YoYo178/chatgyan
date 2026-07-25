@@ -12,7 +12,8 @@ export type TLoginMutationResponse = APIResponse<{
   user: IUser;
 }>;
 
-export const useLoginMutation = useMutationBase<
-  TLoginMutationBody,
-  TLoginMutationResponse
->(APIEndpoints.LOGIN, 'Login', true);
+export const useLoginMutation = useMutationBase<TLoginMutationBody, TLoginMutationResponse>(
+  APIEndpoints.LOGIN,
+  'Login',
+  true,
+);

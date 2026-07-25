@@ -16,9 +16,7 @@ interface QueryBaseParams {
 export const useQueryBase = <ResponseType>(
   endpoint: Endpoint,
   sendCookies: boolean = false,
-  shouldRetry:
-    | boolean
-    | ((failureCount: number, error: Error) => boolean) = false,
+  shouldRetry: boolean | ((failureCount: number, error: Error) => boolean) = false,
   staleTime: number | undefined = undefined,
 ) => {
   return <ResponseTypeOverride = ResponseType>({
@@ -36,22 +34,17 @@ export const useQueryBase = <ResponseType>(
       ...queryOptions({
         queryKey: [...queryKey, sendCookies],
         queryFn: async ({ signal }) => {
-          const response = await API.get<APIResponse<ResponseTypeOverride>>(
-            URL,
-            {
-              withCredentials: sendCookies,
-              signal,
-            },
-          );
+          const response = await API.get<APIResponse<ResponseTypeOverride>>(URL, {
+            withCredentials: sendCookies,
+            signal,
+          });
           return response?.data;
         },
       }),
       retry: (failureCount: number, error: Error) => {
-        if (typeof shouldRetry === 'function')
-          return shouldRetry(failureCount, error);
+        if (typeof shouldRetry === 'function') return shouldRetry(failureCount, error);
 
-        if (axios.isAxiosError(error) && error.response?.status === 401)
-          return false;
+        if (axios.isAxiosError(error) && error.response?.status === 401) return false;
 
         return shouldRetry;
       },

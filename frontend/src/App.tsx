@@ -10,8 +10,7 @@ import UserRoute from './pages/wrappers/UserRoute';
 
 function App() {
   const userPrefersDark =
-    window.matchMedia &&
-    window.matchMedia('(prefers-color-scheme: dark)').matches;
+    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
   useLayoutEffect(() => {
     if (userPrefersDark) {
@@ -27,7 +26,7 @@ function App() {
         <Route element={<UserRoute />}>
           <Route path='/dashboard' element={<ChatPage />} />
         </Route>
-        
+
         <Route element={<GuestRoute />}>
           <Route path='/' element={<LandingPage />} />
           <Route path='/login' element={<Login />} />

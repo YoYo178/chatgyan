@@ -49,9 +49,7 @@ export default function ParticipantEntry({
           {user?.username && (
             <p className='text-xs text-slate-500 wrap-anywhere'>@{user?.username}</p>
           )}
-          <p className='text-xs text-slate-500'>
-            Joined {formatJoinTime(joinTimestamp)}
-          </p>
+          <p className='text-xs text-slate-500'>Joined {formatJoinTime(joinTimestamp)}</p>
         </div>
       </div>
 

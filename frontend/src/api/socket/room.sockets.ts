@@ -1,14 +1,8 @@
-import {
-  startListeningMessageEvents,
-  stopListeningMessageEvents,
-} from './message.sockets';
+import { startListeningMessageEvents, stopListeningMessageEvents } from './message.sockets';
 import { queryOptions, type QueryClient } from '@tanstack/react-query';
 import type { ChatGyanSocket } from '@/types/socket.types';
 
-export function startListeningRoomEvents(
-  socket: ChatGyanSocket,
-  queryClient?: QueryClient,
-) {
+export function startListeningRoomEvents(socket: ChatGyanSocket, queryClient?: QueryClient) {
   stopListeningRoomEvents(socket);
 
   socket.on('memberJoined', (roomId, userId) => {

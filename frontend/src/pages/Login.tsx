@@ -11,10 +11,7 @@ import { useLoginMutation } from '@/api/hooks/auth/useLoginMutation';
 import axios from 'axios';
 
 const LoginSchema = v.object({
-  email: v.pipe(
-    v.string('Email is required'),
-    v.email('Invalid email address'),
-  ),
+  email: v.pipe(v.string('Email is required'), v.email('Invalid email address')),
   password: v.pipe(
     v.string('Password is required'),
     v.minLength(8, 'Password must be at least 8 characters'),
@@ -57,16 +54,13 @@ export default function Login() {
               Sign in and jump back into your study circles.
             </h1>
             <p className='max-w-xl text-slate-600 dark:text-slate-300'>
-              Continue collaborating with classmates, keep track of assignments,
-              and pick up right where you left off.
+              Continue collaborating with classmates, keep track of assignments, and pick up right
+              where you left off.
             </p>
           </div>
 
           <div className='grid gap-4 sm:grid-cols-3 text-left'>
-            <InfoCard
-              title='Study rooms'
-              description='Rejoin live group sessions in seconds.'
-            />
+            <InfoCard title='Study rooms' description='Rejoin live group sessions in seconds.' />
             <InfoCard
               title='Shared resources'
               description='Access notes, docs, and study guides.'

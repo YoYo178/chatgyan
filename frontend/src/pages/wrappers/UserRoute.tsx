@@ -8,8 +8,7 @@ export default function UserRoute() {
     queryKey: ['users', 'me'],
   });
   const me = data?.data?.user;
-  const isUnauthorized =
-    axios.isAxiosError(error) && error.response?.status === 401;
+  const isUnauthorized = axios.isAxiosError(error) && error.response?.status === 401;
   const isLoggedIn = !isUnauthorized && !!me?._id;
 
   if (isLoading) return <LoadingPage />;

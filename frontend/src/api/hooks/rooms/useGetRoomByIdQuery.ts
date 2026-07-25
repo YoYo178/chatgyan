@@ -10,9 +10,7 @@ export const useGetRoomByIdQuery = useQueryBase<GetRoomByIdResponse>(
   true,
 );
 
-export const useRoom = <
-  ResponseTypeOverride extends GetRoomByIdResponse = GetRoomByIdResponse,
->(
+export const useRoom = <ResponseTypeOverride extends GetRoomByIdResponse = GetRoomByIdResponse>(
   roomId: string | null,
 ): ResponseTypeOverride['room'] | null => {
   const { data } = useGetRoomByIdQuery<ResponseTypeOverride>({

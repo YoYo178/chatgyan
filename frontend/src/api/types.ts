@@ -1,10 +1,4 @@
-export type HTTP_METHODS =
-  | 'GET'
-  | 'PATCH'
-  | 'PUT'
-  | 'POST'
-  | 'DELETE'
-  | 'OPTIONS';
+export type HTTP_METHODS = 'GET' | 'PATCH' | 'PUT' | 'POST' | 'DELETE' | 'OPTIONS';
 
 type AUTH_ROUTES = 'LOGIN' | 'LOGOUT' | 'SIGNUP';
 type USER_ROUTES = 'GET_ME' | 'UPDATE_ME' | 'GET_USER';

@@ -16,10 +16,7 @@ export const useMutationBase = <PayloadType, ResponseType>(
   actionName: string,
   sendAndAcceptCookies: boolean = false,
   options?: {
-    optimisticUpdate?: (
-      variables: { payload: PayloadType },
-      oldData: unknown,
-    ) => unknown;
+    optimisticUpdate?: (variables: { payload: PayloadType }, oldData: unknown) => unknown;
   },
 ) => {
   return ({ queryKey = [] }: { queryKey?: string[] }) => {
@@ -33,11 +30,9 @@ export const useMutationBase = <PayloadType, ResponseType>(
       }: MutationBaseParams<PayloadType>) => {
         let URL = endpoint.URL;
 
-        if (Object.keys(pathParams).length)
-          URL = injectPathParams(URL, pathParams);
+        if (Object.keys(pathParams).length) URL = injectPathParams(URL, pathParams);
 
-        if (Object.keys(queryParams).length)
-          URL = injectQueryParams(URL, queryParams);
+        if (Object.keys(queryParams).length) URL = injectQueryParams(URL, queryParams);
 
         let response: AxiosResponse<APIResponse<ResponseType>> | null = null;
 
@@ -100,10 +95,7 @@ export const useMutationBase = <PayloadType, ResponseType>(
 
         if (axios.isAxiosError(err)) {
           const error = err as AxiosError<{ message: unknown }>;
-          console.error(
-            `${actionName} failed:`,
-            error?.response?.data?.message,
-          );
+          console.error(`${actionName} failed:`, error?.response?.data?.message);
         } else if (err instanceof Error) {
           console.error(`${actionName} failed:`, err?.message);
         } else {

@@ -46,20 +46,13 @@ interface CreateRoomModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export default function CreateRoomModal({
-  open,
-  onOpenChange,
-}: CreateRoomModalProps) {
+export default function CreateRoomModal({ open, onOpenChange }: CreateRoomModalProps) {
   const queryClient = useQueryClient();
   const setJoinedRoomId = useRoomsStore((state) => state.setJoinedRoomId);
   const setSelectedRoomId = useRoomsStore((state) => state.setSelectedRoomId);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [selectedVisibility, setSelectedVisibility] = useState<
-    'public' | 'private'
-  >('public');
-  const [selectedType, setSelectedType] = useState<'course' | 'topic'>(
-    'course',
-  );
+  const [selectedVisibility, setSelectedVisibility] = useState<'public' | 'private'>('public');
+  const [selectedType, setSelectedType] = useState<'course' | 'topic'>('course');
 
   const {
     register,
@@ -164,16 +157,13 @@ export default function CreateRoomModal({
       <div className='relative z-10 w-full rounded-t-3xl border border-slate-800/80 bg-slate-950/95 p-4 shadow-2xl shadow-slate-950/60 ring-1 ring-white/5 sm:max-w-2xl sm:rounded-3xl sm:p-6'>
         <div className='mb-5 flex items-start justify-between gap-4'>
           <div className='space-y-2'>
-            <p className='text-xs uppercase tracking-[0.28em] text-emerald-300/70'>
-              New room
-            </p>
+            <p className='text-xs uppercase tracking-[0.28em] text-emerald-300/70'>New room</p>
             <h3 className='chat-display-font text-2xl font-semibold text-slate-50'>
               Create a study space
             </h3>
             <p className='max-w-xl text-sm leading-6 text-slate-400'>
-              Set the attributes of the room here, which will be visible to
-              other students when they browse rooms. You can edit these later if
-              you want.
+              Set the attributes of the room here, which will be visible to other students when they
+              browse rooms. You can edit these later if you want.
             </p>
           </div>
 
@@ -188,9 +178,7 @@ export default function CreateRoomModal({
 
         <form className='space-y-5' onSubmit={handleSubmit(submitRoom)}>
           <label className='block space-y-2'>
-            <span className='text-sm font-medium text-slate-200'>
-              Room name
-            </span>
+            <span className='text-sm font-medium text-slate-200'>Room name</span>
             <div className='rounded-2xl border border-slate-800 bg-slate-900/70 px-4 py-3 transition focus-within:border-emerald-400/60'>
               <input
                 {...register('name')}
@@ -199,16 +187,12 @@ export default function CreateRoomModal({
                 autoComplete='off'
               />
             </div>
-            {errors.name?.message && (
-              <p className='text-sm text-rose-400'>{errors.name.message}</p>
-            )}
+            {errors.name?.message && <p className='text-sm text-rose-400'>{errors.name.message}</p>}
           </label>
 
           <div className='grid gap-4 md:grid-cols-2'>
             <div className='space-y-2'>
-              <span className='text-sm font-medium text-slate-200'>
-                Room type
-              </span>
+              <span className='text-sm font-medium text-slate-200'>Room type</span>
               <div className='grid grid-cols-2 gap-2 rounded-2xl border border-slate-800 bg-slate-900/70 p-2'>
                 <label
                   className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl p-1.5 text-sm font-semibold transition ${
@@ -220,9 +204,7 @@ export default function CreateRoomModal({
                   <input
                     {...register('type', {
                       onChange: (event) =>
-                        setSelectedType(
-                          event.target.value as 'course' | 'topic',
-                        ),
+                        setSelectedType(event.target.value as 'course' | 'topic'),
                     })}
                     type='radio'
                     value='course'
@@ -242,9 +224,7 @@ export default function CreateRoomModal({
                   <input
                     {...register('type', {
                       onChange: (event) =>
-                        setSelectedType(
-                          event.target.value as 'course' | 'topic',
-                        ),
+                        setSelectedType(event.target.value as 'course' | 'topic'),
                     })}
                     type='radio'
                     value='topic'
@@ -255,8 +235,7 @@ export default function CreateRoomModal({
                 </label>
               </div>
               <p className='text-xs leading-5 text-slate-500'>
-                Choose whether the room is tied to a course or a discussion
-                topic.
+                Choose whether the room is tied to a course or a discussion topic.
               </p>
             </div>
 
@@ -268,18 +247,14 @@ export default function CreateRoomModal({
                 <input
                   {...register('typeName')}
                   placeholder={
-                    selectedType === 'course'
-                      ? 'e.g. Computer Science'
-                      : 'e.g. Exam Revision'
+                    selectedType === 'course' ? 'e.g. Computer Science' : 'e.g. Exam Revision'
                   }
                   className='w-full bg-transparent text-sm text-slate-100 outline-none placeholder:text-slate-500'
                   autoComplete='off'
                 />
               </div>
               {errors.typeName?.message ? (
-                <p className='text-sm text-rose-400'>
-                  {errors.typeName.message}
-                </p>
+                <p className='text-sm text-rose-400'>{errors.typeName.message}</p>
               ) : (
                 <p className='text-xs leading-5 text-slate-500'>
                   {selectedType === 'course'
@@ -292,9 +267,7 @@ export default function CreateRoomModal({
 
           <div className='grid gap-4 md:grid-cols-2'>
             <div className='space-y-2'>
-              <span className='text-sm font-medium text-slate-200'>
-                Visibility
-              </span>
+              <span className='text-sm font-medium text-slate-200'>Visibility</span>
               <div className='grid grid-cols-2 gap-2 rounded-2xl border border-slate-800 bg-slate-900/70 p-2'>
                 <label
                   className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl p-1.5 text-sm font-semibold transition ${
@@ -306,9 +279,7 @@ export default function CreateRoomModal({
                   <input
                     {...register('visibility', {
                       onChange: (event) =>
-                        setSelectedVisibility(
-                          event.target.value as 'public' | 'private',
-                        ),
+                        setSelectedVisibility(event.target.value as 'public' | 'private'),
                     })}
                     type='radio'
                     value='public'
@@ -328,9 +299,7 @@ export default function CreateRoomModal({
                   <input
                     {...register('visibility', {
                       onChange: (event) =>
-                        setSelectedVisibility(
-                          event.target.value as 'public' | 'private',
-                        ),
+                        setSelectedVisibility(event.target.value as 'public' | 'private'),
                     })}
                     type='radio'
                     value='private'
@@ -341,15 +310,13 @@ export default function CreateRoomModal({
                 </label>
               </div>
               <p className='text-xs leading-5 text-slate-500'>
-                Public rooms can be discovered more easily, while private rooms
-                keep the room code more controlled.
+                Public rooms can be discovered more easily, while private rooms keep the room code
+                more controlled.
               </p>
             </div>
 
             <label className='block space-y-2'>
-              <span className='text-sm font-medium text-slate-200'>
-                Member limit
-              </span>
+              <span className='text-sm font-medium text-slate-200'>Member limit</span>
               <div className='rounded-2xl border border-slate-800 bg-slate-900/70 px-4 py-3 transition focus-within:border-emerald-400/60'>
                 <input
                   {...register('memberLimit', { valueAsNumber: true })}
@@ -361,9 +328,7 @@ export default function CreateRoomModal({
                 />
               </div>
               {errors.memberLimit?.message ? (
-                <p className='text-sm text-rose-400'>
-                  {errors.memberLimit.message}
-                </p>
+                <p className='text-sm text-rose-400'>{errors.memberLimit.message}</p>
               ) : (
                 <p className='text-xs leading-5 text-slate-500'>
                   Pick a limit between 2 and 10 students.

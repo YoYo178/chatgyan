@@ -31,10 +31,7 @@ interface ProfileModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export default function ProfileModal({
-  open,
-  onOpenChange,
-}: ProfileModalProps) {
+export default function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
   const queryClient = useQueryClient();
   const me = useMe();
   const { mutateAsync } = useUpdateMeMutation({});
@@ -135,9 +132,7 @@ export default function ProfileModal({
       <div className='relative z-10 w-full rounded-t-3xl border border-slate-800/80 bg-slate-950/95 p-4 shadow-2xl shadow-slate-950/60 ring-1 ring-white/5 sm:max-w-2xl sm:rounded-3xl sm:p-6'>
         <div className='mb-5 flex items-start justify-between gap-4'>
           <div className='space-y-2'>
-            <p className='text-xs uppercase tracking-[0.28em] text-emerald-300/70'>
-              Profile
-            </p>
+            <p className='text-xs uppercase tracking-[0.28em] text-emerald-300/70'>Profile</p>
             <h3 className='chat-display-font text-2xl font-semibold text-slate-50'>
               Edit your student profile
             </h3>
@@ -162,9 +157,7 @@ export default function ProfileModal({
 
         <form className='space-y-5' onSubmit={handleSubmit(submitProfile)}>
           <label className='block space-y-2'>
-            <span className='text-sm font-medium text-slate-200'>
-              Full name
-            </span>
+            <span className='text-sm font-medium text-slate-200'>Full name</span>
             <div className='rounded-2xl border border-slate-800 bg-slate-900/70 px-4 py-3 transition focus-within:border-emerald-400/60'>
               <div className='flex items-center gap-3'>
                 <IconUser className='h-4 w-4 text-slate-400' />

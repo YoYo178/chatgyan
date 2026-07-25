@@ -26,9 +26,7 @@ export default function ParticipantsPanel() {
     <aside className='flex h-full flex-col gap-4 rounded-3xl border border-slate-800/80 bg-slate-900/70 p-4 shadow-xl shadow-slate-950/30 backdrop-blur lg:h-full lg:min-h-0'>
       <div className='flex items-start justify-between gap-3'>
         <div>
-          <p className='text-xs uppercase tracking-[0.24em] text-emerald-300/70'>
-            Members
-          </p>
+          <p className='text-xs uppercase tracking-[0.24em] text-emerald-300/70'>Members</p>
           <h2 className='chat-display-font text-lg font-semibold text-slate-100'>
             {room?.name ? `${room.name} roster` : 'In this room'}
           </h2>
@@ -82,8 +80,7 @@ export default function ParticipantsPanel() {
           Session focus
         </div>
         <p className='mt-2 text-sm text-slate-400'>
-          Keep questions tagged with the assignment number for easier
-          follow-ups.
+          Keep questions tagged with the assignment number for easier follow-ups.
         </p>
       </div>
     </aside>

@@ -13,7 +13,8 @@ export interface TSignupMutationResponse {
   };
 }
 
-export const useSignupMutation = useMutationBase<
-  TSignupMutationBody,
-  TSignupMutationResponse
->(APIEndpoints.SIGNUP, 'Sign up', true);
+export const useSignupMutation = useMutationBase<TSignupMutationBody, TSignupMutationResponse>(
+  APIEndpoints.SIGNUP,
+  'Sign up',
+  true,
+);

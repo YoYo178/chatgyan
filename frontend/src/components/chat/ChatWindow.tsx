@@ -24,10 +24,7 @@ import {
 import { queryOptions, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import {
-  startListeningRoomEvents,
-  stopListeningRoomEvents,
-} from '@/api/socket/room.sockets';
+import { startListeningRoomEvents, stopListeningRoomEvents } from '@/api/socket/room.sockets';
 
 const linkPattern = /https?:\/\/[^\s<]+/gi;
 
@@ -40,16 +37,12 @@ function getRoomSummary(room: IRoom | null) {
       : room.type === 'course'
         ? 'Course room'
         : 'Topic room',
-    visibilityLabel:
-      room.visibility === 'public' ? 'Public room' : 'Private room',
+    visibilityLabel: room.visibility === 'public' ? 'Public room' : 'Private room',
     membersLabel: `${room.memberCount} / ${room.memberLimit} students`,
   };
 }
 
-function renderMessageContent(
-  text: string,
-  onLinkClick: (url: string) => void,
-): ReactNode[] {
+function renderMessageContent(text: string, onLinkClick: (url: string) => void): ReactNode[] {
   const parts: ReactNode[] = [];
   const matches = Array.from(text.matchAll(linkPattern));
   let lastIndex = 0;
@@ -58,10 +51,7 @@ function renderMessageContent(
     const matchedText = match[0];
     const startIndex = match.index ?? 0;
     const trailingMatch = matchedText.match(/[.,!?;:)]+$/)?.[0] ?? '';
-    const cleanUrl = matchedText.slice(
-      0,
-      matchedText.length - trailingMatch.length,
-    );
+    const cleanUrl = matchedText.slice(0, matchedText.length - trailingMatch.length);
 
     if (startIndex > lastIndex) {
       parts.push(text.slice(lastIndex, startIndex));
@@ -93,9 +83,7 @@ function renderMessageContent(
   return parts.length > 0 ? parts : [text];
 }
 
-function flattenMessages(
-  pages: { data?: { messages?: IMessage[] } }[] | undefined,
-) {
+function flattenMessages(pages: { data?: { messages?: IMessage[] } }[] | undefined) {
   if (!pages?.length) return [];
 
   const seen = new Set<string>();
@@ -149,10 +137,7 @@ export default function ChatWindow() {
     enabled: !!joinedRoomId && isJoinedActiveRoom,
   });
 
-  const messages = useMemo(
-    () => flattenMessages(messagesData?.pages),
-    [messagesData?.pages],
-  );
+  const messages = useMemo(() => flattenMessages(messagesData?.pages), [messagesData?.pages]);
 
   const {
     data: roomData,
@@ -179,10 +164,7 @@ export default function ChatWindow() {
     const container = scrollContainerRef.current;
     if (!container) return true;
 
-    return (
-      container.scrollHeight - container.scrollTop - container.clientHeight <
-      120
-    );
+    return container.scrollHeight - container.scrollTop - container.clientHeight < 120;
   };
 
   useEffect(() => {
@@ -221,8 +203,7 @@ export default function ChatWindow() {
       return;
     }
 
-    const heightDelta =
-      container.scrollHeight - previousScrollHeightRef.current;
+    const heightDelta = container.scrollHeight - previousScrollHeightRef.current;
     if (heightDelta > 0) {
       container.scrollTop += heightDelta;
     }
@@ -236,8 +217,7 @@ export default function ChatWindow() {
 
     const previousCount = previousMessageCountRef.current;
     const shouldScrollToBottom =
-      !hasScrolledToBottomRef.current ||
-      (messages.length > previousCount && isNearBottom());
+      !hasScrolledToBottomRef.current || (messages.length > previousCount && isNearBottom());
 
     if (shouldScrollToBottom) {
       messagesEndRef.current?.scrollIntoView({ behavior: 'auto' });
@@ -272,26 +252,22 @@ export default function ChatWindow() {
       });
     }
 
-    socket.emit(
-      'joinRoom',
-      { method: 'id', data: activeRoomId },
-      ({ success, data }) => {
-        if (success && data?.roomId) {
-          queryClient.invalidateQueries({
-            ...queryOptions({ queryKey: ['rooms'] }),
-          });
-          queryClient.invalidateQueries({
-            ...queryOptions({ queryKey: ['users', 'me'] }),
-          });
-          startListeningRoomEvents(socket, queryClient);
-          setJoinedRoomId(selectedRoomId);
-          setSelectedRoomId(null);
+    socket.emit('joinRoom', { method: 'id', data: activeRoomId }, ({ success, data }) => {
+      if (success && data?.roomId) {
+        queryClient.invalidateQueries({
+          ...queryOptions({ queryKey: ['rooms'] }),
+        });
+        queryClient.invalidateQueries({
+          ...queryOptions({ queryKey: ['users', 'me'] }),
+        });
+        startListeningRoomEvents(socket, queryClient);
+        setJoinedRoomId(selectedRoomId);
+        setSelectedRoomId(null);
 
-          setJoinedRoomId(data.roomId);
-          setSelectedRoomId(data.roomId);
-        }
-      },
-    );
+        setJoinedRoomId(data.roomId);
+        setSelectedRoomId(data.roomId);
+      }
+    });
   };
 
   const handleCancelSelection = () => {
@@ -388,15 +364,13 @@ export default function ChatWindow() {
           <div className='relative z-10 w-full rounded-t-3xl border border-slate-800/80 bg-slate-950/95 p-4 shadow-2xl shadow-slate-950/60 ring-1 ring-white/5 sm:max-w-lg sm:rounded-3xl sm:p-6'>
             <div className='mb-4 flex items-start justify-between gap-4'>
               <div className='space-y-2'>
-                <p className='text-xs uppercase tracking-[0.28em] text-sky-300/70'>
-                  External link
-                </p>
+                <p className='text-xs uppercase tracking-[0.28em] text-sky-300/70'>External link</p>
                 <h3 className='chat-display-font text-2xl font-semibold text-slate-50'>
                   Open this resource?
                 </h3>
                 <p className='text-sm leading-6 text-slate-400'>
-                  Students often share notes, docs, or video references. Review
-                  the link before you continue.
+                  Students often share notes, docs, or video references. Review the link before you
+                  continue.
                 </p>
               </div>
 
@@ -410,12 +384,8 @@ export default function ChatWindow() {
             </div>
 
             <div className='rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-sm text-slate-300'>
-              <p className='text-xs uppercase tracking-[0.22em] text-slate-500'>
-                Destination
-              </p>
-              <p className='mt-2 break-all font-medium text-slate-100'>
-                {pendingLink}
-              </p>
+              <p className='text-xs uppercase tracking-[0.22em] text-slate-500'>Destination</p>
+              <p className='mt-2 break-all font-medium text-slate-100'>{pendingLink}</p>
             </div>
 
             <div className='mt-5 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end'>
@@ -463,15 +433,13 @@ export default function ChatWindow() {
           <div className='relative z-10 w-full rounded-t-3xl border border-slate-800/80 bg-slate-950/95 p-4 shadow-2xl shadow-slate-950/60 ring-1 ring-white/5 sm:max-w-lg sm:rounded-3xl sm:p-6'>
             <div className='mb-4 flex items-start justify-between gap-4'>
               <div className='space-y-2'>
-                <p className='text-xs uppercase tracking-[0.28em] text-rose-300/70'>
-                  Delete room
-                </p>
+                <p className='text-xs uppercase tracking-[0.28em] text-rose-300/70'>Delete room</p>
                 <h3 className='chat-display-font text-2xl font-semibold text-slate-50'>
                   Delete this room permanently?
                 </h3>
                 <p className='text-sm leading-6 text-slate-400'>
-                  This action cannot be undone. All messages will be removed and
-                  every member will be disconnected from the study session.
+                  This action cannot be undone. All messages will be removed and every member will
+                  be disconnected from the study session.
                 </p>
               </div>
 
@@ -490,21 +458,15 @@ export default function ChatWindow() {
             </div>
 
             <div className='rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-sm text-slate-300'>
-              <p className='text-xs uppercase tracking-[0.22em] text-slate-500'>
-                Room to delete
-              </p>
-              <p className='mt-2 font-medium text-slate-100'>
-                {room?.name ?? 'Study room'}
-              </p>
+              <p className='text-xs uppercase tracking-[0.22em] text-slate-500'>Room to delete</p>
+              <p className='mt-2 font-medium text-slate-100'>{room?.name ?? 'Study room'}</p>
               <p className='mt-1 text-xs text-slate-500'>
                 {room?.typeName ?? 'Room details'} ·{' '}
                 {roomSummary?.membersLabel ?? 'Members unavailable'}
               </p>
             </div>
 
-            {deleteError && (
-              <p className='mt-4 text-sm text-rose-300'>{deleteError}</p>
-            )}
+            {deleteError && <p className='mt-4 text-sm text-rose-300'>{deleteError}</p>}
 
             <div className='mt-5 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end'>
               <button
@@ -549,23 +511,18 @@ export default function ChatWindow() {
               Join a study room to start chatting
             </h2>
             <p className='mt-3 text-sm leading-6 text-slate-400'>
-              Single-click a room from the left panel to preview it here, then
-              join the room when you are ready.
+              Single-click a room from the left panel to preview it here, then join the room when
+              you are ready.
             </p>
             <p className='mt-3 text-sm leading-6 text-slate-400'>
-              Alternatively, double click a room to join it directly. Once you
-              are inside, you will see the room details, the roster, and the
-              chat thread for respective topic.
+              Alternatively, double click a room to join it directly. Once you are inside, you will
+              see the room details, the roster, and the chat thread for respective topic.
             </p>
           </div>
         </div>
 
         {linkDialog}
-        <EditRoomModal
-          open={isEditModalOpen}
-          onOpenChange={setIsEditModalOpen}
-          room={room}
-        />
+        <EditRoomModal open={isEditModalOpen} onOpenChange={setIsEditModalOpen} room={room} />
       </section>
     );
   }
@@ -576,9 +533,7 @@ export default function ChatWindow() {
         <div className='w-full h-full flex flex-col rounded-3xl border border-slate-800/80 bg-slate-950/70 p-5 shadow-xl shadow-slate-950/40 sm:p-6'>
           <div className='mb-5 flex items-start justify-between gap-4'>
             <div className='space-y-2'>
-              <p className='text-xs uppercase tracking-[0.24em] text-slate-400'>
-                Room preview
-              </p>
+              <p className='text-xs uppercase tracking-[0.24em] text-slate-400'>Room preview</p>
               <h2 className='chat-display-font text-2xl font-semibold text-slate-50'>
                 {room.name}
               </h2>
@@ -593,9 +548,7 @@ export default function ChatWindow() {
 
           <div className='grid gap-3 sm:grid-cols-2'>
             <div className='rounded-2xl border border-slate-800/70 bg-slate-900/70 p-4'>
-              <p className='text-xs uppercase tracking-[0.2em] text-slate-500'>
-                Room type
-              </p>
+              <p className='text-xs uppercase tracking-[0.2em] text-slate-500'>Room type</p>
               <p className='mt-2 text-sm font-semibold text-slate-100'>
                 {roomSummary?.label ?? 'Study room'}
               </p>
@@ -603,15 +556,11 @@ export default function ChatWindow() {
             </div>
 
             <div className='rounded-2xl border border-slate-800/70 bg-slate-900/70 p-4'>
-              <p className='text-xs uppercase tracking-[0.2em] text-slate-500'>
-                Room details
-              </p>
+              <p className='text-xs uppercase tracking-[0.2em] text-slate-500'>Room details</p>
               <p className='mt-2 text-sm font-semibold text-slate-100'>
                 {roomSummary?.membersLabel}
               </p>
-              <p className='mt-1 text-xs text-slate-400'>
-                {roomSummary?.visibilityLabel}
-              </p>
+              <p className='mt-1 text-xs text-slate-400'>{roomSummary?.visibilityLabel}</p>
             </div>
           </div>
 
@@ -619,25 +568,18 @@ export default function ChatWindow() {
             {room.visibility === 'private' && room.owner !== me?._id && (
               <div className='flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-800/70 bg-slate-950/40 px-4 py-3'>
                 <div>
-                  <p className='text-xs uppercase tracking-[0.2em] text-slate-500'>
-                    Notice
-                  </p>
+                  <p className='text-xs uppercase tracking-[0.2em] text-slate-500'>Notice</p>
                   <p className='text-sm text-slate-300'>
-                    This room cannot be joined directly from the room browser.
-                    You must obtain the room code from the room owner and join
-                    using that code.
+                    This room cannot be joined directly from the room browser. You must obtain the
+                    room code from the room owner and join using that code.
                   </p>
                 </div>
               </div>
             )}
             <div className='flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-800/70 bg-slate-950/40 px-4 py-3'>
               <div>
-                <p className='text-xs uppercase tracking-[0.2em] text-slate-500'>
-                  Room actions
-                </p>
-                <p className='text-sm text-slate-300'>
-                  Join this room or cancel the selection.
-                </p>
+                <p className='text-xs uppercase tracking-[0.2em] text-slate-500'>Room actions</p>
+                <p className='text-sm text-slate-300'>Join this room or cancel the selection.</p>
               </div>
               <div className='flex flex-wrap items-center gap-2'>
                 <button
@@ -691,9 +633,7 @@ export default function ChatWindow() {
             {!isRoomHeaderExpanded && (
               <p className='truncate text-xs text-slate-400 sm:text-sm'>
                 {room?.typeName ?? 'Room details'}
-                {roomSummary?.membersLabel
-                  ? ` · ${roomSummary.membersLabel}`
-                  : ''}
+                {roomSummary?.membersLabel ? ` · ${roomSummary.membersLabel}` : ''}
               </p>
             )}
           </div>
@@ -717,13 +657,11 @@ export default function ChatWindow() {
               <div className='flex flex-col gap-3 lg:flex-row lg:justify-between'>
                 <div className='space-y-1'>
                   <p className='text-sm text-slate-400'>
-                    {room?.typeName ?? 'Room details'} ·{' '}
-                    {roomSummary?.label ?? 'Room'}
+                    {room?.typeName ?? 'Room details'} · {roomSummary?.label ?? 'Room'}
                   </p>
                   {room && (
                     <p className='text-xs text-slate-500'>
-                      {roomSummary?.membersLabel} ·{' '}
-                      {roomSummary?.visibilityLabel}
+                      {roomSummary?.membersLabel} · {roomSummary?.visibilityLabel}
                     </p>
                   )}
                 </div>
@@ -746,9 +684,7 @@ export default function ChatWindow() {
 
               <div className='flex flex-col gap-3 rounded-2xl border border-slate-800/70 bg-slate-950/40 px-4 py-3 sm:flex-row sm:items-center sm:justify-between'>
                 <div>
-                  <p className='text-xs uppercase tracking-[0.2em] text-slate-500'>
-                    Room actions
-                  </p>
+                  <p className='text-xs uppercase tracking-[0.2em] text-slate-500'>Room actions</p>
                   <p className='text-sm text-slate-300'>
                     Review room settings or leave the study session.
                   </p>
@@ -793,10 +729,7 @@ export default function ChatWindow() {
         </div>
       </header>
 
-      <div
-        ref={scrollContainerRef}
-        className='flex-1 space-y-4 overflow-y-auto pr-2'
-      >
+      <div ref={scrollContainerRef} className='flex-1 space-y-4 overflow-y-auto pr-2'>
         {isRoomLoading && (
           <div className='rounded-2xl border border-slate-800/70 bg-slate-950/50 px-4 py-3 text-sm text-slate-400'>
             Loading room details...
@@ -849,17 +782,11 @@ export default function ChatWindow() {
       <ChatInput
         roomId={joinedRoomId || ''}
         disabled={!joinedRoomId}
-        autoFocusEnabled={
-          !pendingLink && !isEditModalOpen && !isDeleteModalOpen
-        }
+        autoFocusEnabled={!pendingLink && !isEditModalOpen && !isDeleteModalOpen}
       />
       {linkDialog}
       {deleteDialog}
-      <EditRoomModal
-        open={isEditModalOpen}
-        onOpenChange={setIsEditModalOpen}
-        room={room}
-      />
+      <EditRoomModal open={isEditModalOpen} onOpenChange={setIsEditModalOpen} room={room} />
     </section>
   );
 }

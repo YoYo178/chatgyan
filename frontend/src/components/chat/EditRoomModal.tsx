@@ -40,21 +40,12 @@ interface EditRoomModalProps {
   room: IRoom | null;
 }
 
-export default function EditRoomModal({
-  open,
-  onOpenChange,
-  room,
-}: EditRoomModalProps) {
+export default function EditRoomModal({ open, onOpenChange, room }: EditRoomModalProps) {
   const queryClient = useQueryClient();
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [selectedVisibility, setSelectedVisibility] = useState<
-    'public' | 'private'
-  >('public');
+  const [selectedVisibility, setSelectedVisibility] = useState<'public' | 'private'>('public');
 
-  const memberLimitMin = useMemo(
-    () => Math.max(2, room?.memberCount ?? 2),
-    [room?.memberCount],
-  );
+  const memberLimitMin = useMemo(() => Math.max(2, room?.memberCount ?? 2), [room?.memberCount]);
 
   const {
     register,
@@ -165,15 +156,13 @@ export default function EditRoomModal({
       <div className='relative z-10 w-full rounded-t-3xl border border-slate-800/80 bg-slate-950/95 p-4 shadow-2xl shadow-slate-950/60 ring-1 ring-white/5 sm:max-w-lg sm:rounded-3xl sm:p-6'>
         <div className='mb-5 flex items-start justify-between gap-4'>
           <div className='space-y-2'>
-            <p className='text-xs uppercase tracking-[0.28em] text-emerald-300/70'>
-              Room settings
-            </p>
+            <p className='text-xs uppercase tracking-[0.28em] text-emerald-300/70'>Room settings</p>
             <h3 className='chat-display-font text-2xl font-semibold text-slate-50'>
               Edit study room
             </h3>
             <p className='text-sm leading-6 text-slate-400'>
-              Update the room name, visibility, and member limit. Room type and
-              code cannot be changed.
+              Update the room name, visibility, and member limit. Room type and code cannot be
+              changed.
             </p>
           </div>
 
@@ -189,16 +178,12 @@ export default function EditRoomModal({
 
         <div className='mb-5 grid gap-3 rounded-2xl border border-slate-800 bg-slate-900/70 p-4 text-sm text-slate-300 sm:grid-cols-2'>
           <div>
-            <p className='text-xs uppercase tracking-[0.22em] text-slate-500'>
-              Room type
-            </p>
+            <p className='text-xs uppercase tracking-[0.22em] text-slate-500'>Room type</p>
             <p className='mt-1 font-medium text-slate-100'>{roomTypeLabel}</p>
             <p className='mt-1 text-xs text-slate-400'>{room.typeName}</p>
           </div>
           <div>
-            <p className='text-xs uppercase tracking-[0.22em] text-slate-500'>
-              Room code
-            </p>
+            <p className='text-xs uppercase tracking-[0.22em] text-slate-500'>Room code</p>
             <p className='mt-1 inline-flex items-center gap-2 font-medium text-slate-100'>
               <IconHash className='h-4 w-4 text-emerald-300' />
               {room.code}
@@ -208,9 +193,7 @@ export default function EditRoomModal({
 
         <form className='space-y-5' onSubmit={handleSubmit(submitRoom)}>
           <label className='block space-y-2'>
-            <span className='text-sm font-medium text-slate-200'>
-              Room name
-            </span>
+            <span className='text-sm font-medium text-slate-200'>Room name</span>
             <div className='rounded-2xl border border-slate-800 bg-slate-900/70 px-4 py-3 transition focus-within:border-emerald-400/60'>
               <input
                 {...register('name')}
@@ -219,16 +202,12 @@ export default function EditRoomModal({
                 autoComplete='off'
               />
             </div>
-            {errors.name?.message && (
-              <p className='text-sm text-rose-400'>{errors.name.message}</p>
-            )}
+            {errors.name?.message && <p className='text-sm text-rose-400'>{errors.name.message}</p>}
           </label>
 
           <div className='grid gap-4 sm:grid-cols-2'>
             <div className='space-y-2'>
-              <span className='text-sm font-medium text-slate-200'>
-                Visibility
-              </span>
+              <span className='text-sm font-medium text-slate-200'>Visibility</span>
               <div className='grid grid-cols-2 gap-2 rounded-2xl border border-slate-800 bg-slate-900/70 p-2'>
                 <label
                   className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl p-1.5 text-sm font-semibold transition ${
@@ -240,9 +219,7 @@ export default function EditRoomModal({
                   <input
                     {...register('visibility', {
                       onChange: (event) =>
-                        setSelectedVisibility(
-                          event.target.value as 'public' | 'private',
-                        ),
+                        setSelectedVisibility(event.target.value as 'public' | 'private'),
                     })}
                     type='radio'
                     value='public'
@@ -262,9 +239,7 @@ export default function EditRoomModal({
                   <input
                     {...register('visibility', {
                       onChange: (event) =>
-                        setSelectedVisibility(
-                          event.target.value as 'public' | 'private',
-                        ),
+                        setSelectedVisibility(event.target.value as 'public' | 'private'),
                     })}
                     type='radio'
                     value='private'
@@ -275,16 +250,12 @@ export default function EditRoomModal({
                 </label>
               </div>
               {errors.visibility?.message && (
-                <p className='text-sm text-rose-400'>
-                  {errors.visibility.message}
-                </p>
+                <p className='text-sm text-rose-400'>{errors.visibility.message}</p>
               )}
             </div>
 
             <label className='block space-y-2'>
-              <span className='text-sm font-medium text-slate-200'>
-                Member limit
-              </span>
+              <span className='text-sm font-medium text-slate-200'>Member limit</span>
               <div className='rounded-2xl border border-slate-800 bg-slate-900/70 px-4 py-3 transition focus-within:border-emerald-400/60'>
                 <input
                   {...register('memberLimit', { valueAsNumber: true })}
@@ -296,13 +267,11 @@ export default function EditRoomModal({
                 />
               </div>
               {errors.memberLimit?.message ? (
-                <p className='text-sm text-rose-400'>
-                  {errors.memberLimit.message}
-                </p>
+                <p className='text-sm text-rose-400'>{errors.memberLimit.message}</p>
               ) : (
                 <p className='text-xs leading-5 text-slate-500'>
-                  Must be between {memberLimitMin} and 10 (currently{' '}
-                  {room.memberCount} member{room.memberCount === 1 ? '' : 's'}).
+                  Must be between {memberLimitMin} and 10 (currently {room.memberCount} member
+                  {room.memberCount === 1 ? '' : 's'}).
                 </p>
               )}
             </label>

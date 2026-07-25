@@ -11,10 +11,7 @@ interface JoinRoomModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export default function JoinRoomModal({
-  open,
-  onOpenChange,
-}: JoinRoomModalProps) {
+export default function JoinRoomModal({ open, onOpenChange }: JoinRoomModalProps) {
   const queryClient = useQueryClient();
   const [code, setCode] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -98,10 +95,7 @@ export default function JoinRoomModal({
             setSelectedRoomId(data.roomId);
             handleClose();
           } else {
-            setError(
-              socketError ??
-                'Failed to join room. Check the code and try again.',
-            );
+            setError(socketError ?? 'Failed to join room. Check the code and try again.');
           }
         },
       );
@@ -123,9 +117,7 @@ export default function JoinRoomModal({
       <div className='relative z-10 w-full rounded-t-3xl border border-slate-800/80 bg-slate-950/95 p-4 shadow-2xl shadow-slate-950/60 ring-1 ring-white/5 sm:max-w-md sm:rounded-3xl sm:p-6'>
         <div className='mb-5 flex items-start justify-between gap-4'>
           <div className='space-y-2'>
-            <p className='text-xs uppercase tracking-[0.28em] text-emerald-300/70'>
-              Rooms
-            </p>
+            <p className='text-xs uppercase tracking-[0.28em] text-emerald-300/70'>Rooms</p>
             <h3 className='chat-display-font text-2xl font-semibold text-slate-50'>
               Join via code
             </h3>

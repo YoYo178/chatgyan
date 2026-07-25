@@ -6,10 +6,7 @@ import { socket } from '@/api/socket';
 import { IconPlus, IconSearch, IconHash } from '@tabler/icons-react';
 import { useState, useMemo, useEffect } from 'react';
 import { queryOptions, useQueryClient } from '@tanstack/react-query';
-import {
-  startListeningRoomEvents,
-  stopListeningRoomEvents,
-} from '@/api/socket/room.sockets';
+import { startListeningRoomEvents, stopListeningRoomEvents } from '@/api/socket/room.sockets';
 
 export default function RoomList() {
   const queryClient = useQueryClient();
@@ -48,24 +45,20 @@ export default function RoomList() {
       });
     }
 
-    socket.emit(
-      'joinRoom',
-      { method: 'id', data: roomId },
-      ({ success, data }) => {
-        if (success && data?.roomId) {
-          queryClient.invalidateQueries({
-            ...queryOptions({ queryKey: ['rooms'] }),
-          });
-          queryClient.invalidateQueries({
-            ...queryOptions({ queryKey: ['users', 'me'] }),
-          });
-          startListeningRoomEvents(socket, queryClient);
+    socket.emit('joinRoom', { method: 'id', data: roomId }, ({ success, data }) => {
+      if (success && data?.roomId) {
+        queryClient.invalidateQueries({
+          ...queryOptions({ queryKey: ['rooms'] }),
+        });
+        queryClient.invalidateQueries({
+          ...queryOptions({ queryKey: ['users', 'me'] }),
+        });
+        startListeningRoomEvents(socket, queryClient);
 
-          setJoinedRoomId(data.roomId);
-          setSelectedRoomId(null);
-        }
-      },
-    );
+        setJoinedRoomId(data.roomId);
+        setSelectedRoomId(null);
+      }
+    });
   };
 
   useEffect(() => {
@@ -79,9 +72,7 @@ export default function RoomList() {
     return rooms.filter((r) => {
       return (
         (r.name && r.name.toLowerCase().includes(q)) ||
-        ('code' in r &&
-          typeof r.code === 'string' &&
-          r.code.toLowerCase().includes(q))
+        ('code' in r && typeof r.code === 'string' && r.code.toLowerCase().includes(q))
       );
     });
   }, [rooms, debouncedSearch]);
@@ -90,12 +81,8 @@ export default function RoomList() {
     <aside className='flex h-full flex-col gap-4 rounded-3xl border border-slate-800/80 bg-slate-900/70 p-4 shadow-xl shadow-slate-950/30 backdrop-blur lg:h-full lg:min-h-0'>
       <div className='flex items-center justify-between'>
         <div>
-          <p className='text-xs uppercase tracking-[0.24em] text-emerald-300/70'>
-            Rooms
-          </p>
-          <h2 className='chat-display-font text-lg font-semibold text-slate-100'>
-            Your spaces
-          </h2>
+          <p className='text-xs uppercase tracking-[0.24em] text-emerald-300/70'>Rooms</p>
+          <h2 className='chat-display-font text-lg font-semibold text-slate-100'>Your spaces</h2>
         </div>
       </div>
       <div className='w-full flex items-center gap-2'>
@@ -166,10 +153,7 @@ export default function RoomList() {
               >
                 <div className='w-full flex flex-col gap-1'>
                   <div className='w-full flex gap-2 justify-between'>
-                    <p
-                      className='font-semibold text-slate-100 min-w-0 truncate'
-                      title={room.name}
-                    >
+                    <p className='font-semibold text-slate-100 min-w-0 truncate' title={room.name}>
                       {room.name}
                     </p>
                     <div className='flex items-center gap-1.5 shrink-0 ml-auto pl-1'>
@@ -185,23 +169,18 @@ export default function RoomList() {
                       ) : (
                         <span className='bg-emerald-400/10 text-emerald-200 px-2.5 py-0.5 rounded-full text-xs w-fit h-fit'>
                           {room.type?.length
-                            ? room?.type?.at(0)?.toUpperCase() +
-                              room.type?.slice(1)
+                            ? room?.type?.at(0)?.toUpperCase() + room.type?.slice(1)
                             : ''}{' '}
                         </span>
                       )}
                     </div>
                   </div>
 
-                  <p
-                    className='text-xs font-medium text-slate-400'
-                    title={room.typeName}
-                  >
+                  <p className='text-xs font-medium text-slate-400' title={room.typeName}>
                     {room.typeName}
                   </p>
                   <p className='text-xs text-slate-500'>
-                    {room.memberCount}{' '}
-                    {room.memberCount === 1 ? 'student' : 'students'}
+                    {room.memberCount} {room.memberCount === 1 ? 'student' : 'students'}
                   </p>
                 </div>
               </button>
@@ -209,15 +188,9 @@ export default function RoomList() {
           })}
       </div>
 
-      <CreateRoomModal
-        open={isCreateRoomOpen}
-        onOpenChange={setIsCreateRoomOpen}
-      />
+      <CreateRoomModal open={isCreateRoomOpen} onOpenChange={setIsCreateRoomOpen} />
 
-      <JoinRoomModal
-        open={isJoinByCodeOpen}
-        onOpenChange={setIsJoinByCodeOpen}
-      />
+      <JoinRoomModal open={isJoinByCodeOpen} onOpenChange={setIsJoinByCodeOpen} />
     </aside>
   );
 }

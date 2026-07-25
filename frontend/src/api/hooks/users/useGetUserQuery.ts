@@ -4,11 +4,7 @@ import type { IUser } from '@/types/user.types';
 
 type GetUserResponse = { user: IUser };
 
-export const useGetUserQuery = useQueryBase<GetUserResponse>(
-  APIEndpoints.GET_USER,
-  true,
-  true,
-);
+export const useGetUserQuery = useQueryBase<GetUserResponse>(APIEndpoints.GET_USER, true, true);
 
 export const useGetUser = (userId: string | null) => {
   const { data } = useGetUserQuery({

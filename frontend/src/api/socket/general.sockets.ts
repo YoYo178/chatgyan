@@ -5,16 +5,14 @@ import type { ChatGyanSocket } from '@/types/socket.types';
 import type { IUser } from '@/types/user.types';
 import { queryOptions, type QueryClient } from '@tanstack/react-query';
 
-export function handleSocketConnection(
-  socket: ChatGyanSocket,
-  queryClient?: QueryClient,
-) {
+export function handleSocketConnection(socket: ChatGyanSocket, queryClient?: QueryClient) {
   handleSocketDisconnection(socket);
 
   socket.on('roomCreated', (room) => {
     // Update rooms data
-    const oldRoomsData: APIResponse<{ rooms: IRoom[] }> | undefined =
-      queryClient?.getQueryData(['rooms']);
+    const oldRoomsData: APIResponse<{ rooms: IRoom[] }> | undefined = queryClient?.getQueryData([
+      'rooms',
+    ]);
     const newRoomsData: APIResponse<{ rooms: IRoom[] }> = {
       success: true,
       data: {
@@ -23,8 +21,10 @@ export function handleSocketConnection(
     };
     queryClient?.setQueryData(['rooms'], newRoomsData);
 
-    const oldMeData: APIResponse<{ user: IUser }> | undefined =
-      queryClient?.getQueryData(['users', 'me']);
+    const oldMeData: APIResponse<{ user: IUser }> | undefined = queryClient?.getQueryData([
+      'users',
+      'me',
+    ]);
     if (room.owner === oldMeData?.data?.user._id)
       queryClient?.invalidateQueries({
         ...queryOptions({ queryKey: ['users', 'me'] }),
@@ -33,21 +33,18 @@ export function handleSocketConnection(
 
   socket.on('roomDeleted', (roomId, _ownerId) => {
     // Get old rooms data
-    const oldRooms = queryClient?.getQueryData<APIResponse<{ rooms: IRoom[] }>>(
-      ['rooms'],
-    )?.data?.rooms;
+    const oldRooms = queryClient?.getQueryData<APIResponse<{ rooms: IRoom[] }>>(['rooms'])?.data
+      ?.rooms;
     if (!oldRooms) return;
 
     // Update rooms data
-    queryClient.setQueryData(
-      ['rooms'],
-      (old: APIResponse<{ rooms: IRoom[] }>) =>
-        old
-          ? {
-              success: true,
-              data: { rooms: oldRooms.filter((r) => r._id !== roomId) },
-            }
-          : old,
+    queryClient.setQueryData(['rooms'], (old: APIResponse<{ rooms: IRoom[] }>) =>
+      old
+        ? {
+            success: true,
+            data: { rooms: oldRooms.filter((r) => r._id !== roomId) },
+          }
+        : old,
     );
 
     // If we had this room selected, clear it

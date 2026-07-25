@@ -16,17 +16,10 @@ interface InfiniteQueryBaseParams {
 export const useInfiniteQueryBase = <ResponseType>(
   endpoint: Endpoint,
   sendCookies: boolean = false,
-  shouldRetry:
-    | boolean
-    | ((failureCount: number, error: Error) => boolean) = false,
+  shouldRetry: boolean | ((failureCount: number, error: Error) => boolean) = false,
   staleTime: number | undefined = undefined,
 ) => {
-  return ({
-    queryKey = [],
-    pathParams,
-    queryParams,
-    enabled = true,
-  }: InfiniteQueryBaseParams) => {
+  return ({ queryKey = [], pathParams, queryParams, enabled = true }: InfiniteQueryBaseParams) => {
     let URL = endpoint.URL;
 
     if (pathParams) URL = injectPathParams(URL, pathParams);
@@ -56,11 +49,9 @@ export const useInfiniteQueryBase = <ResponseType>(
       }),
 
       retry: (failureCount: number, error: Error) => {
-        if (typeof shouldRetry === 'function')
-          return shouldRetry(failureCount, error);
+        if (typeof shouldRetry === 'function') return shouldRetry(failureCount, error);
 
-        if (axios.isAxiosError(error) && error.response?.status === 401)
-          return false;
+        if (axios.isAxiosError(error) && error.response?.status === 401) return false;
 
         return shouldRetry;
       },

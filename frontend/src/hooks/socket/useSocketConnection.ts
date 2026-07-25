@@ -1,8 +1,5 @@
 import { socket } from '@/api/socket';
-import {
-  handleSocketConnection,
-  handleSocketDisconnection,
-} from '@/api/socket/general.sockets';
+import { handleSocketConnection, handleSocketDisconnection } from '@/api/socket/general.sockets';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 

@@ -12,9 +12,7 @@ export interface TypingUser {
 const areSameTypingUsers = (
   userA: Omit<TypingUser, 'username'>,
   userB: Omit<TypingUser, 'username'>,
-) =>
-  userA.roomId === userB.roomId &&
-  userA.userId === userB.userId;
+) => userA.roomId === userB.roomId && userA.userId === userB.userId;
 
 interface RoomsState {
   selectedRoomId: string | null;
@@ -39,18 +37,12 @@ export const useRoomsStore = create<RoomsState>((set) => ({
   typingUsers: [],
   addTypingUser: (typingUser) =>
     set((state) => {
-      const exists = state.typingUsers.some((user) =>
-        areSameTypingUsers(user, typingUser),
-      );
-      return exists
-        ? state
-        : { typingUsers: [...state.typingUsers, typingUser] };
+      const exists = state.typingUsers.some((user) => areSameTypingUsers(user, typingUser));
+      return exists ? state : { typingUsers: [...state.typingUsers, typingUser] };
     }),
   removeTypingUser: (typingUser) =>
     set((state) => ({
-      typingUsers: state.typingUsers.filter(
-        (user) => !areSameTypingUsers(user, typingUser),
-      ),
+      typingUsers: state.typingUsers.filter((user) => !areSameTypingUsers(user, typingUser)),
     })),
   setTypingUsers: (typingUsers) => set({ typingUsers }),
 }));

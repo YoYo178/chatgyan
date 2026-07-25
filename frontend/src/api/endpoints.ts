@@ -29,7 +29,7 @@ export const APIEndpoints: Endpoints = {
     METHOD: 'GET',
     URL: '/users/:userId',
   },
-  
+
   // Room routes
   GET_ALL_ROOMS: {
     METHOD: 'GET',

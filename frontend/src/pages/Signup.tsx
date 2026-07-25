@@ -1,13 +1,7 @@
 import Badge from '@/components/Badge';
 import CustomInput from '@/components/CustomInput';
 import InfoCard from '@/components/InfoCard';
-import {
-  IconMail,
-  IconKey,
-  IconArrowNarrowRight,
-  IconUser,
-  IconHash,
-} from '@tabler/icons-react';
+import { IconMail, IconKey, IconArrowNarrowRight, IconUser, IconHash } from '@tabler/icons-react';
 import { Link, useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { queryOptions, useQueryClient } from '@tanstack/react-query';
@@ -18,29 +12,18 @@ import axios from 'axios';
 
 const SignupSchema = v.pipe(
   v.object({
-    fullName: v.pipe(
-      v.string(),
-      v.trim(),
-      v.minLength(1, 'Full name is required'),
-    ),
+    fullName: v.pipe(v.string(), v.trim(), v.minLength(1, 'Full name is required')),
     username: v.pipe(
       v.string('Username is required'),
       v.trim(),
       v.minLength(1, 'Username cannot be empty'),
     ),
-    email: v.pipe(
-      v.string('Email is required'),
-      v.email('Invalid email address'),
-    ),
+    email: v.pipe(v.string('Email is required'), v.email('Invalid email address')),
     password: v.pipe(
       v.string('Password is required'),
       v.minLength(8, 'Password must be at least 8 characters'),
     ),
-    confirmPassword: v.pipe(
-      v.string(),
-      v.trim(),
-      v.minLength(1, 'Confirm password is required'),
-    ),
+    confirmPassword: v.pipe(v.string(), v.trim(), v.minLength(1, 'Confirm password is required')),
   }),
   v.forward(
     v.check(
@@ -89,8 +72,8 @@ export default function Signup() {
               Start collaborating with your study circle today.
             </h1>
             <p className='max-w-xl text-slate-600 dark:text-slate-300'>
-              Create your free ChatGyan account and connect with classmates,
-              share resources, and stay on top of your coursework.
+              Create your free ChatGyan account and connect with classmates, share resources, and
+              stay on top of your coursework.
             </p>
           </div>
 
@@ -99,14 +82,8 @@ export default function Signup() {
               title='Instant groups'
               description='Create or join study groups in seconds.'
             />
-            <InfoCard
-              title='No sign-up fee'
-              description='Completely free for students.'
-            />
-            <InfoCard
-              title='Always secure'
-              description='Your data stays private and encrypted.'
-            />
+            <InfoCard title='No sign-up fee' description='Completely free for students.' />
+            <InfoCard title='Always secure' description='Your data stays private and encrypted.' />
           </div>
         </div>
 
@@ -175,9 +152,7 @@ export default function Signup() {
               </button>
               {isError && (
                 <p className='text-center text-sm text-red-500 dark:text-red-400'>
-                  {axios.isAxiosError(error)
-                    ? error.response?.data?.message
-                    : 'An error occurred'}
+                  {axios.isAxiosError(error) ? error.response?.data?.message : 'An error occurred'}
                 </p>
               )}
             </form>
